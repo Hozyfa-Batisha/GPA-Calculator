@@ -95,7 +95,7 @@ Grade scale used:
 
 ---
 
-## API Endpoints
+## API Endpoint
     (┬┬﹏┬┬)
 
 ---
