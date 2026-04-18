@@ -30,15 +30,14 @@
 
 ```
 .
-├── app/
-│   └── frontend/             # frontend
-│       └── src/
+├── app/                      # frontend      
+│      └── src/
 │           ├── pages/        # Login, Home, Semester, Rankings, etc..
 │           ├── components/   # UI components (shadcn)
 │           └── etc/          # The other sources
-├─── backend/
-│   └── server/               # backend
-│       └── src/
+├─── server/                  # backend
+│      └── src/
+│      
 ├── database/                 # DB scripts, schema
 └── README.md
 ```
