@@ -1,21 +1,85 @@
-/* This file handles the 'look and feel' of the website */
-body {
-    background-color: #f4f7f6;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+/* Modern Academic Theme - Simplified & Clean */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+:root {
+    --primary-color: #283593;
+    --primary-light: #5c6bc0;
+    --bg-color: #f8f9fa;
+    --text-dark: #2d3436;
+    --card-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+    --transition: all 0.3s ease;
 }
+
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    font-family: 'Poppins', sans-serif;
+    color: var(--text-dark);
+    min-height: 100vh;
+}
+
+/* Navbar Refinement */
+.navbar {
+    background-color: var(--primary-color) !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    padding: 1rem 0;
+}
+
+.navbar-brand {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+/* Card Modernization */
 .card {
     border: none;
-    border-radius: 15px;
-    transition: transform 0.3s;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--card-shadow);
+    transition: var(--transition);
+    padding: 1.5rem;
 }
+
 .card:hover {
     transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
 }
-.navbar {
-    background-color: #2c3e50 !important;
-}
+
+/* Button Polish */
 .btn-primary {
-    background-color: #3498db;
+    background-color: var(--primary-color);
     border: none;
+    border-radius: 10px;
+    padding: 0.6rem 1.5rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-light);
+    transform: scale(1.02);
+}
+
+.btn-success {
+    border-radius: 10px;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+/* Form Inputs */
+.form-control {
+    border-radius: 10px;
+    padding: 0.75rem;
+    border: 1px solid #ddd;
+    transition: var(--transition);
+}
+
+.form-control:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 0.25rem rgba(92, 107, 192, 0.25);
+}
+
+/* Dashboard Specifics */
+#semester-container .card {
+    margin-bottom: 1rem;
 }
