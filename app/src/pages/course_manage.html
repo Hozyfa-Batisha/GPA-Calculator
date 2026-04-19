@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Course - Student Success Hub</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../style/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+<body class="no-sidebar d-flex align-items-center justify-content-center vh-100">
+
+    <div class="custom-card shadow-lg" style="width: 500px;">
+        <div class="mb-4">
+            <a href="courses.html" class="btn btn-sm btn-outline-secondary mb-3">← Back to List</a>
+            <h2 class="fw-bold" id="form-title">Add New Course</h2>
+        </div>
+
+        <form id="courseForm">
+            <div class="mb-3">
+                <label class="form-label">Select Semester</label>
+                <select id="semId" class="form-select" required></select>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Course Name</label>
+                <input type="text" id="courseName" class="form-control" required>
+            </div>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Grade (0.0 - 4.0)</label>
+                    <input type="number" step="0.01" id="grade" class="form-control" required>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Credits</label>
+                    <input type="number" id="credits" class="form-control" required>
+                </div>
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Save Course</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='courses.html'">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../scripts/api.js" type="module"></script>
+    <script type="module">
+        import { api } from '../scripts/api.js';
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const courseId = urlParams.get('id');
+        const defaultSemId = urlParams.get('semester_id');
+
+        async function loadData() {
+            try {
+                const semesters = await api.semesters.getAll();
+                const semSelect = document.getElementById('semId');
+                semSelect.innerHTML = '<option value="">-- Choose Semester --</option>';
+                semesters.forEach(s => {
+                    semSelect.innerHTML += `<option value="${s.id}" ${s.id == defaultSemId ? 'selected' : ''}>${s.name}</option>`;
+                });
+
+                if (courseId) {
+                    document.getElementById('form-title').innerText = "Edit Course";
+                    const courses = await api.courses.getBySemester(defaultSemId || 0); // This is a simplification
+                    // Note: In a real app, we'd have a getCourseById API.
+                    // For now, we'll search for the course in all semesters.
+                    const allSems = await api.semesters.getAll();
+                    let foundCourse = null;
+                    for (const s of allSems) {
+                        const cList = await api.courses.getBySemester(s.id);
+                        const c = cList.find(course => course.id == courseId);
+                        if (c) { foundCourse = c; break; }
+                    }
+
+                    if (foundCourse) {
+                        document.getElementById('courseName').value = foundCourse.name;
+                        document.getElementById('grade').value = foundCourse.grade;
+                        document.getElementById('credits').value = foundCourse.credits;
+                        document.getElementById('semId').value = foundCourse.semester_id;
+                    }
+                }
+            } catch (err) { window.location.href = 'login.html'; }
+        }
+
+        document.getElementById('courseForm').onsubmit = async (e) => {
+            e.preventDefault();
+            const data = {
+                name: document.getElementById('courseName').value,
+                grade: document.getElementById('grade').value,
+                credits: document.getElementById('credits').value,
+                semester_id: document.getElementById('semId').value
+            };
+
+            try {
+                if (courseId) {
+                    await api.courses.update(courseId, data);
+                } else {
+                    await api.courses.create(data.name, data.credits, data.semester_id, data.grade);
+                }
+                window.location.href = 'courses.html';
+            } catch (err) { alert(err.message); }
+        };
+
+        window.onload = loadData;
+    </script>
+</body>
+</html>
