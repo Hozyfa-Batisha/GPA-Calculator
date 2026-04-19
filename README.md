@@ -18,10 +18,10 @@
 
 | Layer     | Technology                           |
 |-----------|--------------------------------------|
-| Frontend  | React (with a little of TypeScript)  |
+| Frontend  | Vanilla                              |
 | Styling   | Botstrab CSS                         |
-| Backend   | Node.js                              |
-| Database  | PostgreSQL                           |
+| Backend   | php                                  |
+| Database  | MySQL                                |
 | API       | REST API                             |
 
 ---
@@ -33,10 +33,11 @@
 ├── app/                      # frontend      
 │      └── src/
 │           ├── pages/        # Login, Home, Semester, Rankings, etc..
-│           ├── components/   # UI components (shadcn)
-│           └── etc/          # The other sources
+│           ├── scripts/      # The javascripts files
+│           └── styles/       # The CSS files
 ├─── server/                  # backend
 │      └── src/
+│           └── routes/
 │      
 ├── database/                 # DB scripts, schema
 └── README.md
