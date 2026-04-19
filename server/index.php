@@ -17,11 +17,11 @@
 // Parse resource from URL path
 $path     = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $segments = array_values(array_filter(explode('/', trim($path, '/'))));
-// e.g. /api/semesters → ['api', 'semesters']
-// e.g. /api/users/me  → ['api', 'users', 'me']
 
-$resource = $segments[1] ?? '';
-$sub      = $segments[2] ?? '';
+// Find the 'api' segment to handle subfolder installations
+$apiIndex = array_search('api', $segments);
+$resource = ($apiIndex !== false) ? ($segments[$apiIndex + 1] ?? '') : '';
+$sub      = ($apiIndex !== false) ? ($segments[$apiIndex + 2] ?? '') : '';
 
 $routeMap = [
     'auth'      => __DIR__ . '/routes/auth.php',
