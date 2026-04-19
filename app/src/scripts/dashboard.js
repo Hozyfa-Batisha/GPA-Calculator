@@ -2,18 +2,13 @@ import { api } from './api.js';
 
 async function initDashboard() {
     try {
-        // 1. Check authentication
         const user = await api.user.getProfile();
         document.getElementById('user-welcome').innerText = `Welcome, ${user.full_name}!`;
 
-        // 2. Fetch all semesters
         const semesters = await api.semesters.getAll();
-        
         let totalWeightedSum = 0;
         let totalCredits = 0;
 
-        // 3. For each semester, fetch its courses to calculate CGPA
-        // We use Promise.all to fetch all courses in parallel for better performance
         const coursePromises = semesters.map(sem => api.courses.getBySemester(sem.id));
         const allCoursesSets = await Promise.all(coursePromises);
 
@@ -26,7 +21,6 @@ async function initDashboard() {
 
         const cgpa = totalCredits > 0 ? (totalWeightedSum / totalCredits) : 0;
 
-        // 4. Update the UI
         document.getElementById('cgpa-value').innerText = cgpa.toFixed(2);
         document.getElementById('total-credits').innerText = totalCredits;
 
@@ -47,15 +41,14 @@ async function initDashboard() {
 
     } catch (err) {
         console.error("Dashboard Error:", err);
-        // If not logged in, redirect to login page
         window.location.href = 'login.html';
     }
 }
 
-// Handle Logout
 document.getElementById('logoutBtn')?.addEventListener('click', async () => {
     try {
         await api.auth.logout();
+        localStorage.removeItem('userToken');
         window.location.href = 'login.html';
     } catch (err) {
         alert("Logout failed");
