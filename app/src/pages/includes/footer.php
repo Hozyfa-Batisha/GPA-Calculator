@@ -1,8 +1,7 @@
     </div> <!-- Closing .main-content div -->
 
-    <!-- AI Chat Component -->
+    <!-- AI Chat Panel (Sidemenu Integrated) -->
     <link rel="stylesheet" href="../../style/chat.css">
-    <div id="chat-bubble" class="chat-bubble" title="AI Assistant">🤖</div>
     <div id="chat-window" class="chat-window">
         <div class="chat-header">
             <span>AI Academic Advisor</span>
@@ -14,6 +13,7 @@
             <button id="chat-send">➤</button>
         </div>
     </div>
+
     <script src="../../scripts/chat.js"></script>
     <script src="../../scripts/ui.js"></script>
 
