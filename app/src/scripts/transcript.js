@@ -27,6 +27,7 @@ function getGradeClass(grade) {
 }
 
 function getStanding(cgpa) {
+    if (cgpa === null || isNaN(parseFloat(cgpa))) return 'N/A';
     if (cgpa >= 3.7) return 'Excellent';
     if (cgpa >= 3.3) return 'Very Good';
     if (cgpa >= 3.0) return 'Good';
@@ -35,10 +36,15 @@ function getStanding(cgpa) {
     return 'Below Average';
 }
 
-// ─── Render helpers ───────────────────────────────────────────────────────────
+// Render helpers ───────────────────────────────────────────────────────────
+
+function formatGPA(gpa) {
+    const val = parseFloat(gpa);
+    return (!isNaN(val)) ? val.toFixed(2) : '0.00';
+}
 
 function renderSemester(sem) {
-    const semGPA   = parseFloat(sem.gpa).toFixed(2);
+    const semGPA   = formatGPA(sem.gpa);
     const totalCr  = sem.courses.reduce((s, c) => s + c.credits, 0);
 
     const courseRows = sem.courses.map(c => {
@@ -118,7 +124,7 @@ function renderTranscript(profile, transcript) {
         totalCredits += s.courses.reduce((sum, c) => sum + c.credits, 0);
     });
 
-    document.getElementById('cgpa-display').textContent     = parseFloat(transcript.cgpa).toFixed(2);
+    document.getElementById('cgpa-display').textContent     = formatGPA(transcript.cgpa);
     document.getElementById('standing-display').textContent = getStanding(transcript.cgpa);
     document.getElementById('total-semesters').textContent  = transcript.semesters.length;
     document.getElementById('total-courses').textContent    = totalCourses;

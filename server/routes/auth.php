@@ -22,6 +22,11 @@ if ($method === 'POST' && $action === 'register') {
     if (!$username || !$password || !$name) {
         respondError('username, password, and name are required.');
     }
+    if (strlen($username) < 3) respondError('Username must be at least 3 characters.');
+    if (strlen($password) < 6) respondError('Password must be at least 6 characters.');
+    if ($email !== null && !filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        respondError('Invalid email format.');
+    }
 
     $pdo  = getDB();
     $hash = password_hash($password, PASSWORD_BCRYPT);

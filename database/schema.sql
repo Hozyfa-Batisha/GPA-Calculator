@@ -2,8 +2,8 @@
 --  Study Planner + GPA Tracker — MySQL Schema
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS study_planner;
-USE study_planner;
+CREATE DATABASE IF NOT EXISTS gpa_calculator;
+USE gpa_calculator;
 
 -- ─────────────────────────────────────────
 --  1. USERS

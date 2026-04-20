@@ -24,9 +24,19 @@ if ($method === 'GET') {
 if ($method === 'PUT') {
     $data = getBody();
 
+    $name = isset($data['name']) ? trim($data['name']) : null;
+    if ($name === '') respondError('Name cannot be empty.');
+
+    $email = isset($data['email']) ? trim($data['email']) : null;
+    if ($email !== null) {
+        if ($email === '') respondError('Email cannot be empty.');
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) respondError('Invalid email format.');
+    }
+
     // Password change (optional)
     $newHash = null;
     if (!empty($data['password'])) {
+        if (strlen($data['password']) < 6) respondError('Password must be at least 6 characters.');
         $newHash = password_hash($data['password'], PASSWORD_BCRYPT);
     }
 
@@ -38,8 +48,8 @@ if ($method === 'PUT') {
         WHERE id = ?
     ");
     $stmt->execute([
-        $data['name']  ?? null,
-        $data['email'] ?? null,
+        $name,
+        $email,
         $newHash,
         $userId,
     ]);

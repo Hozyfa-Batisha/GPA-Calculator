@@ -3,7 +3,7 @@
 /* Navbar user pill */
 .user-pill {
     background: rgba(255,255,255,0.15);
-    color: #fff;
+    color: var(--white);
     padding: 0.3rem 0.9rem;
     border-radius: 20px;
     font-size: 0.9rem;
@@ -19,8 +19,8 @@
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: #fff;
-    color: var(--text-dark);
+    background: var(--white);
+    color: var(--text-main);
     text-decoration: none;
     font-size: 1.1rem;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
@@ -28,38 +28,38 @@
     transition: var(--transition);
 }
 .back-btn:hover {
-    background: #f0f0f0;
-    color: var(--text-dark);
+    background: var(--bg-light);
+    color: var(--text-main);
 }
 
 /* Page title */
 .page-title {
     font-size: 1.5rem;
     font-weight: 600;
-    color: var(--text-dark);
+    color: var(--text-main);
 }
 .page-subtitle {
     font-size: 0.85rem;
-    color: #888;
+    color: var(--text-muted);
 }
 
 /* Print button */
 .btn-print {
-    background: #fff;
-    border: 1px solid #ddd;
+    background: var(--white);
+    border: 1px solid var(--bg-light);
     border-radius: 10px;
     font-size: 0.85rem;
     padding: 0.4rem 1rem;
-    color: var(--text-dark);
+    color: var(--text-main);
     transition: var(--transition);
 }
 .btn-print:hover {
-    background: #f5f5f5;
+    background: var(--bg-light);
 }
 
 /* Summary Card */
 .summary-card {
-    background: #fff;
+    background: var(--white);
     border-radius: 16px;
     padding: 1.8rem;
     box-shadow: 0 4px 20px rgba(0,0,0,0.06);
@@ -68,12 +68,12 @@
 .student-name {
     font-size: 1.2rem;
     font-weight: 600;
-    color: var(--text-dark);
+    color: var(--text-main);
     margin-bottom: 0.2rem;
 }
 .student-meta {
     font-size: 0.82rem;
-    color: #999;
+    color: var(--text-muted);
 }
 
 /* CGPA big display */
@@ -85,7 +85,7 @@
 }
 .cgpa-label {
     font-size: 0.7rem;
-    color: #aaa;
+    color: var(--text-muted);
     letter-spacing: 1px;
     text-transform: uppercase;
     margin-top: 2px;
@@ -99,23 +99,23 @@
 
 /* Summary stats */
 .divider {
-    border-color: #f0f0f0;
+    border-color: var(--bg-light);
 }
 .stat-number {
     font-size: 1.6rem;
     font-weight: 700;
-    color: var(--text-dark);
+    color: var(--text-main);
 }
 .stat-label {
     font-size: 0.7rem;
-    color: #aaa;
+    color: var(--text-muted);
     letter-spacing: 1px;
     text-transform: uppercase;
 }
 
 /* Semester block */
 .semester-block {
-    background: #fff;
+    background: var(--white);
     border-radius: 16px;
     padding: 1.4rem 1.8rem;
     box-shadow: 0 4px 20px rgba(0,0,0,0.05);
@@ -135,16 +135,16 @@
 .semester-name {
     font-size: 1rem;
     font-weight: 600;
-    color: var(--text-dark);
+    color: var(--text-main);
 }
 .semester-meta {
     font-size: 0.8rem;
-    color: #999;
+    color: var(--text-muted);
 }
 .semester-gpa-badge {
     font-size: 0.82rem;
     font-weight: 600;
-    color: var(--text-dark);
+    color: var(--text-main);
 }
 
 /* Course row */
@@ -153,28 +153,47 @@
     align-items: center;
     justify-content: space-between;
     padding: 0.6rem 0;
-    border-bottom: 1px solid #f5f5f5;
+    border-bottom: 1px solid var(--bg-light);
 }
 .course-row:last-child {
     border-bottom: none;
 }
 .course-name {
     font-size: 0.88rem;
-    color: var(--text-dark);
+    color: var(--text-main);
     flex: 1;
+    padding-right: 5px;
 }
 .course-credits {
     font-size: 0.82rem;
-    color: #aaa;
+    color: var(--text-muted);
     width: 60px;
     text-align: center;
 }
 .course-points {
     font-size: 0.88rem;
     font-weight: 600;
-    color: var(--text-dark);
+    color: var(--text-main);
     width: 50px;
     text-align: right;
+}
+
+/* Responsive tweaks for Transcript */
+@media (max-width: 576px) {
+    .semester-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    .semester-gpa-badge {
+        font-size: 0.8rem;
+    }
+    .course-row {
+        gap: 5px;
+    }
+    .course-name {
+        font-size: 0.82rem;
+    }
 }
 
 /* Grade badges - matching the color scheme from image 6 */
@@ -187,7 +206,7 @@
     border-radius: 6px;
     font-size: 0.75rem;
     font-weight: 700;
-    color: #fff;
+    color: var(--white);
     margin: 0 10px;
 }
 .grade-A    { background: #6c5ce7; }
@@ -206,6 +225,6 @@
 
 @media print {
     .navbar, .btn-print, .back-btn { display: none !important; }
-    body { background: #fff !important; }
-    .summary-card, .semester-block { box-shadow: none; border: 1px solid #eee; }
+    body { background: var(--white) !important; }
+    .summary-card, .semester-block { box-shadow: none; border: 1px solid var(--bg-light); }
 }

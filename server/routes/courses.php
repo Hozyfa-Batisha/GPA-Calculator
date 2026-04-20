@@ -75,9 +75,27 @@ if ($method === 'PUT' && $id) {
     $check->execute([$id, $userId]);
     if (!$check->fetch()) respondError('Course not found.', 404);
 
-    $data        = getBody();
-    $grade       = $data['grade'] ?? null;
-    $gradePoints = $grade ? gradeToPoints($grade) : null;
+    $data = getBody();
+    
+    $name = isset($data['name']) ? trim($data['name']) : null;
+    if ($name === '') respondError('Course name cannot be empty.');
+
+    $grade = $data['grade'] ?? null;
+    $gradePoints = null;
+    if ($grade !== null) {
+        $gradePoints = gradeToPoints($grade);
+        if ($gradePoints === null) respondError('Invalid grade provided.');
+    }
+
+    $credits = isset($data['credits']) ? (int)$data['credits'] : null;
+    if ($credits !== null && ($credits < 1 || $credits > 6)) {
+        respondError('Credits must be between 1 and 6.');
+    }
+
+    $progress = isset($data['progress']) ? (int)$data['progress'] : null;
+    if ($progress !== null && ($progress < 0 || $progress > 100)) {
+        respondError('Progress must be between 0 and 100.');
+    }
 
     $stmt = $pdo->prepare("
         UPDATE courses
@@ -89,11 +107,11 @@ if ($method === 'PUT' && $id) {
         WHERE id = ?
     ");
     $stmt->execute([
-        $data['name']     ?? null,
+        $name,
         $grade,
         $gradePoints,
-        isset($data['credits']) ? (int) $data['credits'] : null,
-        isset($data['progress']) ? (int) $data['progress'] : null,
+        $credits,
+        $progress,
         $id,
     ]);
     respond(['message' => 'Course updated.']);
