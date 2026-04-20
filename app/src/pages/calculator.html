@@ -1,74 +1,92 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>GPA Calculator - Student Success Hub</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../style/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-</head>
-<body>
-            <div class="sidebar">
-        <div class="sidebar-header">🎓 Success Hub</div>
-        <ul class="sidebar-menu">
-            <li><a href="dashboard.html">📊 Dashboard</a></li>
-            <li><a href="semesters.html">📅 Semesters</a></li>
-            <li><a href="courses.html">📚 Courses</a></li>
-            <li><a href="calculator.html" class="active">🧮 GPA Calculator</a></li>
-            <li><a href="simulator.html">🎯 Goal Simulator</a></li>
-            <li><a href="mark_scaling.html">📈 Mark Scaling</a></li>
-            <li><a href="transcript.html">📜 Transcript</a></li>
-            <li><a href="settings.html">👤 Profile Settings</a></li>
-            <li class="mt-auto"><a href="#" id="logoutBtn" style="color: #f87171;">🚪 Logout</a></li>
-        </ul>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="sidebar-header">🎓 Success Hub</div>
+      <ul class="sidebar-menu">
+        <li><a href="dashboard.html">📊 Dashboard</a></li>
+        <li><a href="semesters.html">📅 Semesters</a></li>
+        <li><a href="courses.html">📚 Courses</a></li>
+        <li><a href="calculator.html" class="active">🧮 GPA Calculator</a></li>
+        <li><a href="simulator.html">🎯 Goal Simulator</a></li>
+        <li><a href="mark_scaling.html">📈 Mark Scaling</a></li>
+        <li><a href="transcript.html">📜 Transcript</a></li>
+        <li><a href="settings.html">👤 Profile Settings</a></li>
+        <li class="mt-auto">
+          <a href="#" id="logoutBtn" style="color: #f87171">🚪 Logout</a>
+        </li>
+      </ul>
     </div>
 
-    <button id="mobile-toggle" class="mobile-toggle" aria-label="Toggle Menu">
-        ☰
-    </button>
-
     <div class="main-content">
-        <div class="mb-4">
-            <h2 class="fw-bold">Quick GPA Calculator</h2>
-            <p class="text-muted">Manual tool for quick estimations.</p>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="custom-card">
-                    <div id="calc-container"></div>
-                    <div class="d-flex justify-content-between align-items-center mt-4">
-                        <button class="btn btn-outline-primary" onclick="addCourseRow()">+ Add Course</button>
-                        <div class="text-end">
-                            <span class="h5 me-2">Calculated GPA:</span>
-                            <span id="calc-result" class="h3 fw-bold text-primary">0.00</span>
-                        </div>
-                    </div>
-                </div>
+      <div class="mb-4">
+        <h2 class="fw-bold">Quick GPA Calculator</h2>
+        <p class="text-muted">Manual tool for quick estimations.</p>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-8">
+          <div class="custom-card">
+            <div id="calc-container"></div>
+            <div class="d-flex justify-content-between align-items-center mt-4">
+              <button class="btn btn-outline-primary" onclick="addCourseRow()">
+                + Add Course
+              </button>
+              <div class="text-end">
+                <span class="h5 me-2">Calculated GPA:</span>
+                <span id="calc-result" class="h3 fw-bold text-primary"
+                  >0.00</span
+                >
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../scripts/ui.js"></script>
     <script>
-        const gradeMap = {
-            'A': 4.0, 'A-': 3.7, 'B+': 3.3, 'B': 3.0, 'B-': 2.7,
-            'C+': 2.3, 'C': 2.0, 'C-': 1.7, 'D+': 1.3, 'D': 1.0, 'D-': 0.7, 'F': 0.0
-        };
+      const gradeMap = {
+        A: 4.0,
+        "A-": 3.7,
+        "B+": 3.3,
+        B: 3.0,
+        "B-": 2.7,
+        "C+": 2.3,
+        C: 2.0,
+        "C-": 1.7,
+        "D+": 1.3,
+        D: 1.0,
+        "D-": 0.7,
+        F: 0.0,
+      };
 
-        let courseCount = 0;
-        function addCourseRow() {
-            courseCount++;
-            const container = document.getElementById('calc-container');
-            const row = document.createElement('div');
-            row.className = "row g-3 mb-3 align-items-end";
-            
-            let options = '<option value="">-- Grade --</option>';
-            for (const grade in gradeMap) {
-                options += `<option value="${grade}">${grade} (${gradeMap[grade]})</option>`;
-            }
+      let courseCount = 0;
+      function addCourseRow() {
+        courseCount++;
+        const container = document.getElementById("calc-container");
+        const row = document.createElement("div");
+        row.className = "row g-3 mb-3 align-items-end";
 
-            row.innerHTML = `
+        let options = '<option value="">-- Grade --</option>';
+        for (const grade in gradeMap) {
+          options += `<option value="${grade}">${grade} (${gradeMap[grade]})</option>`;
+        }
+
+        row.innerHTML = `
                 <div class="col-md-6"><label class="form-label small">Course Name</label><input type="text" class="form-control course-name"></div>
                 <div class="col-md-3">
                     <label class="form-label small">Grade</label>
@@ -79,25 +97,27 @@
                 <div class="col-md-2"><label class="form-label small">Credits</label><input type="number" min="1" max="6" class="form-control course-credits" oninput="calculateQuickGPA()"></div>
                 <div class="col-md-1"><button class="btn btn-outline-danger" onclick="this.parentElement.parentElement.remove(); calculateQuickGPA();">×</button></div>
             `;
-            container.appendChild(row);
-        }
-        function calculateQuickGPA() {
-            const grades = document.querySelectorAll('.course-grade');
-            const credits = document.querySelectorAll('.course-credits');
-            let totalWeighted = 0, totalCredits = 0;
-            grades.forEach((g, i) => {
-                const gradeLetter = g.value;
-                const credit = parseInt(credits[i].value);
-                const gradePoint = gradeMap[gradeLetter];
-                if (gradePoint !== undefined && !isNaN(credit)) {
-                    totalWeighted += (gradePoint * credit);
-                    totalCredits += credit;
-                }
-            });
-            document.getElementById('calc-result').innerText = totalCredits > 0 ? (totalWeighted / totalCredits).toFixed(2) : '0.00';
-        }
-        window.onload = addCourseRow;
+        container.appendChild(row);
+      }
+      function calculateQuickGPA() {
+        const grades = document.querySelectorAll(".course-grade");
+        const credits = document.querySelectorAll(".course-credits");
+        let totalWeighted = 0,
+          totalCredits = 0;
+        grades.forEach((g, i) => {
+          const gradeLetter = g.value;
+          const credit = parseInt(credits[i].value);
+          const gradePoint = gradeMap[gradeLetter];
+          if (gradePoint !== undefined && !isNaN(credit)) {
+            totalWeighted += gradePoint * credit;
+            totalCredits += credit;
+          }
+        });
+        document.getElementById("calc-result").innerText =
+          totalCredits > 0 ? (totalWeighted / totalCredits).toFixed(2) : "0.00";
+      }
+      window.onload = addCourseRow;
     </script>
     <script src="../scripts/theme.js"></script>
-</body>
+  </body>
 </html>

@@ -1,125 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Official Transcript - Student Success Hub</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../style/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-</head>
-<body>
-        <div class="sidebar">
-        <div class="sidebar-header">🎓 Success Hub</div>
-        <ul class="sidebar-menu">
-            <li><a href="dashboard.html">📊 Dashboard</a></li>
-            <li><a href="semesters.html">📅 Semesters</a></li>
-            <li><a href="courses.html">📚 Courses</a></li>
-            <li><a href="calculator.html">🧮 GPA Calculator</a></li>
-            <li><a href="simulator.html">🎯 Goal Simulator</a></li>
-            <li><a href="mark_scaling.html">📈 Mark Scaling</a></li>
-            <li><a href="transcript.html" class="active">📜 Transcript</a></li>
-            <li><a href="settings.html">👤 Profile Settings</a></li>
-            <li class="mt-auto"><a href="#" id="logoutBtn" style="color: #f87171;">🚪 Logout</a></li>
-        </ul>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="sidebar-header">🎓 Success Hub</div>
+      <ul class="sidebar-menu">
+        <li><a href="dashboard.html">📊 Dashboard</a></li>
+        <li><a href="semesters.html">📅 Semesters</a></li>
+        <li><a href="courses.html">📚 Courses</a></li>
+        <li><a href="calculator.html">🧮 GPA Calculator</a></li>
+        <li><a href="simulator.html">🎯 Goal Simulator</a></li>
+        <li><a href="mark_scaling.html">📈 Mark Scaling</a></li>
+        <li><a href="transcript.html" class="active">📜 Transcript</a></li>
+        <li><a href="settings.html">👤 Profile Settings</a></li>
+        <li class="mt-auto">
+          <a href="#" id="logoutBtn" style="color: #f87171">🚪 Logout</a>
+        </li>
+      </ul>
     </div>
 
-    <button id="mobile-toggle" class="mobile-toggle" aria-label="Toggle Menu">
-        ☰
-    </button>
-
     <div class="main-content">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold">Official Academic Transcript</h2>
-            <button onclick="window.print()" class="btn btn-primary">🖨️ Print Transcript</button>
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold">Official Academic Transcript</h2>
+        <button onclick="window.print()" class="btn btn-primary">
+          🖨️ Print Transcript
+        </button>
+      </div>
+
+      <div class="custom-card bg-white p-5" id="transcript-area">
+        <div class="text-center mb-5">
+          <h1 class="fw-bold">University Academic Record</h1>
+          <p class="text-muted">Official Statement of Results</p>
+          <hr />
+          <div class="row text-start mt-4">
+            <div class="col-6">
+              <p>
+                <strong>Student Name:</strong>
+                <span id="user-name">Loading...</span>
+              </p>
+              <p>
+                <strong>Student Email:</strong>
+                <span id="user-email">Loading...</span>
+              </p>
+            </div>
+            <div class="col-6 text-end">
+              <p><strong>Date Issued:</strong> <span id="issue-date"></span></p>
+              <p><strong>Status:</strong> Active</p>
+            </div>
+          </div>
         </div>
 
-        <div class="custom-card bg-white p-5" id="transcript-area">
-            <div class="text-center mb-5">
-                <h1 class="fw-bold">University Academic Record</h1>
-                <p class="text-muted">Official Statement of Results</p>
-                <hr>
-                <div class="row text-start mt-4">
-                    <div class="col-6">
-                        <p><strong>Student Name:</strong> <span id="user-name">Loading...</span></p>
-                        <p><strong>Student Email:</strong> <span id="user-email">Loading...</span></p>
-                    </div>
-                    <div class="col-6 text-end">
-                        <p><strong>Date Issued:</strong> <span id="issue-date"></span></p>
-                        <p><strong>Status:</strong> Active</p>
-                    </div>
-                </div>
-            </div>
-
-            <div id="semesters-container">
-                <!-- Content injected by JS -->
-            </div>
-
-            <div class="mt-5 p-4 bg-light rounded border text-center">
-                <h4 class="fw-bold">Cumulative GPA (CGPA)</h4>
-                <h1 id="final-cgpa" class="display-4 fw-bold text-primary">0.00</h1>
-                <p class="text-muted">Total Credits Earned: <span id="total-credits">0</span></p>
-            </div>
+        <div id="semesters-container">
+          <!-- Content injected by JS -->
         </div>
+
+        <div class="mt-5 p-4 bg-light rounded border text-center">
+          <h4 class="fw-bold">Cumulative GPA (CGPA)</h4>
+          <h1 id="final-cgpa" class="display-4 fw-bold text-primary">0.00</h1>
+          <p class="text-muted">
+            Total Credits Earned: <span id="total-credits">0</span>
+          </p>
+        </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../scripts/ui.js"></script>
     <script src="../scripts/api.js" type="module"></script>
-    <script type="module">
-        import { api } from '../scripts/api.js';
 
-        async function loadTranscript() {
-            try {
-                const user = await api.user.getProfile();
-                document.getElementById('user-name').innerText = user.full_name;
-                document.getElementById('user-email').innerText = user.email;
-                document.getElementById('issue-date').innerText = new Date().toLocaleDateString();
-
-                const semesters = await api.semesters.getAll();
-                const container = document.getElementById('semesters-container');
-                container.innerHTML = "";
-
-                let totalWeighted = 0, totalCredits = 0;
-
-                for (const sem of semesters) {
-                    const courses = await api.courses.getBySemester(sem.id);
-                    let semCredits = 0, semWeighted = 0;
-                    let rows = "";
-
-                    courses.forEach(c => {
-                        const pts = (parseFloat(c.grade_points || 0) * parseInt(c.credits));
-                        semCredits += parseInt(c.credits);
-                        semWeighted += pts;
-                        rows += `<tr><td>${c.name}</td><td class="text-center">${c.grade}</td><td class="text-center">${c.credits}</td><td class="text-end">${pts.toFixed(2)}</td></tr>`;
-                    });
-
-                    totalWeighted += semWeighted;
-                    totalCredits += semCredits;
-
-                    container.innerHTML += `
-                        <div class="mb-5">
-                            <h5 class="fw-bold border-bottom pb-2">${sem.name}</h5>
-                            <table class="table table-sm table-borderless">
-                                <thead class="text-muted small"><tr><th>Course</th><th class="text-center">Grade</th><th class="text-center">Credits</th><th class="text-end">Points</th></tr></thead>
-                                <tbody>${rows}
-                                    <tr class="fw-bold"><td colspan="3" class="text-end">Semester Total:</td><td class="text-end">${semWeighted.toFixed(2)}</td></tr>
-                                </tbody>
-                            </table>
-                            <p class="text-end small">Semester GPA: <strong>${semCredits > 0 ? (semWeighted / semCredits).toFixed(2) : '0.00'}</strong></p>
-                        </div>`;
-                }
-
-                document.getElementById('final-cgpa').innerText = totalCredits > 0 ? (totalWeighted / totalCredits).toFixed(2) : '0.00';
-                document.getElementById('total-credits').innerText = totalCredits;
-
-            } catch (err) {
-                window.location.href = 'login.html';
-            }
-        }
-
-        window.onload = loadTranscript;
-    </script>
+    <script src="../scripts/transcript.js" type="module"></script>
     <script src="../scripts/theme.js"></script>
-</body>
+  </body>
 </html>
