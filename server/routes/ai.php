@@ -53,6 +53,10 @@ if ($method === 'POST') {
     $result = json_decode($response, true);
     $aiText = $result['candidates'][0]['content']['parts'][0]['text'] ?? 'I am sorry, I could not generate a response.';
 
+    // Strip <thought> blocks to ensure a clean response for the professor
+    $aiText = preg_replace('/<thought>.*?<\/thought>/is', '', $aiText);
+    $aiText = trim($aiText);
+
     respond(['response' => $aiText]);
 }
 
