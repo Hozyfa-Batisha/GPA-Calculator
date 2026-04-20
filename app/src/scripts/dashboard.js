@@ -14,7 +14,7 @@ async function initDashboard() {
 
         allCoursesSets.forEach(courses => {
             courses.forEach(course => {
-                totalWeightedSum += (parseFloat(course.grade) * parseInt(course.credits));
+                totalWeightedSum += (parseFloat(course.grade_points) * parseInt(course.credits));
                 totalCredits += parseInt(course.credits);
             });
         });

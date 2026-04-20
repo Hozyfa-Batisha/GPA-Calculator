@@ -1,135 +1,88 @@
-/**
- * settings.js
- * ─────────────────────────────────────────────────────────────────────────────
- * Expected API endpoints:
- *   GET   /users/me                      → { fullName, username, email }
- *   PATCH /users/me                      → { fullName, email }         → 200
- *   POST  /auth/change-password          → { currentPassword, newPassword } → 200
- */
+import { api } from './api.js';
 
 async function loadSettings() {
-    if (!requireAuth()) return;
-
     try {
-        const res = await fetch(`${API_BASE}/users/me`, { headers: authHeader() });
-
-        if (res.status === 401) { logout(); return; }
-        if (!res.ok) throw new Error('Failed to load profile.');
-
-        const profile = await res.json();
-
-        document.getElementById('username-field').value = profile.username;
-        document.getElementById('fullname-field').value  = profile.fullName;
-        document.getElementById('email-field').value     = profile.email;
-
-        const navPill = document.getElementById('navbar-username');
-        if (navPill) navPill.textContent = profile.fullName + ' ▾';
-
+        const user = await api.user.getProfile();
+        
+        document.getElementById('username-field').value = user.username || '';
+        document.getElementById('fullname-field').value = user.full_name || '';
+        document.getElementById('email-field').value = user.email || '';
+        
     } catch (err) {
-        showMessage('profile-message', err.message, 'error');
+        console.error('Error loading settings:', err);
+        alert('Failed to load profile information.');
     }
 }
 
-// ─── Save profile ─────────────────────────────────────────────────────────────
+async function saveProfile(e) {
+    e.preventDefault();
+    
+    const data = {
+        username: document.getElementById('username-field').value.trim(),
+        full_name: document.getElementById('fullname-field').value.trim(),
+        email: document.getElementById('email-field').value.trim(),
+    };
 
-async function saveProfile() {
-    const fullName = document.getElementById('fullname-field').value.trim();
-    const email    = document.getElementById('email-field').value.trim();
-
-    if (!fullName) {
-        showMessage('profile-message', 'Full name cannot be empty.', 'error');
+    if (!data.username || !data.full_name) {
+        alert('Username and Full Name are required.');
         return;
     }
 
     try {
-        const res = await fetch(`${API_BASE}/users/me`, {
-            method: 'PATCH',
-            headers: authHeader(),
-            body: JSON.stringify({ fullName, email }),
-        });
-
-        if (res.status === 401) { logout(); return; }
-        if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.message || 'Failed to save profile.');
-        }
-
-        const navPill = document.getElementById('navbar-username');
-        if (navPill) navPill.textContent = fullName + ' ▾';
-
-        showMessage('profile-message', 'Profile saved successfully!', 'success');
-
+        await api.user.updateProfile(data);
+        alert('Profile updated successfully!');
     } catch (err) {
-        showMessage('profile-message', err.message, 'error');
+        alert('Error updating profile: ' + err.message);
     }
 }
 
-// ─── Change password ──────────────────────────────────────────────────────────
+async function updatePassword(e) {
+    e.preventDefault();
+    
+    const newPassword = document.getElementById('new-password-field').value;
+    const confirmPassword = document.getElementById('confirm-password-field').value;
 
-async function changePassword() {
-    const currentPassword = document.getElementById('current-password').value;
-    const newPassword     = document.getElementById('new-password').value;
-    const confirm         = document.getElementById('confirm-password').value;
-
-    if (!currentPassword || !newPassword || !confirm) {
-        showMessage('password-message', 'Please fill in all password fields.', 'error');
+    if (!newPassword || newPassword.length < 6) {
+        alert('Password must be at least 6 characters.');
         return;
     }
-    if (newPassword.length < 6) {
-        showMessage('password-message', 'New password must be at least 6 characters.', 'error');
-        return;
-    }
-    if (newPassword !== confirm) {
-        showMessage('password-message', 'New passwords do not match.', 'error');
+    if (newPassword !== confirmPassword) {
+        alert('Passwords do not match.');
         return;
     }
 
     try {
-        const res = await fetch(`${API_BASE}/auth/change-password`, {
-            method: 'POST',
-            headers: authHeader(),
-            body: JSON.stringify({ currentPassword, newPassword }),
-        });
-
-        if (res.status === 401) {
-            showMessage('password-message', 'Current password is incorrect.', 'error');
-            return;
-        }
-        if (!res.ok) {
-            const err = await res.json().catch(() => ({}));
-            throw new Error(err.message || 'Failed to change password.');
-        }
-
-        document.getElementById('current-password').value = '';
-        document.getElementById('new-password').value     = '';
-        document.getElementById('confirm-password').value = '';
-
-        showMessage('password-message', 'Password changed successfully!', 'success');
-
+        await api.user.updateProfile({ password: newPassword });
+        alert('Password updated successfully!');
+        document.getElementById('new-password-field').value = '';
+        document.getElementById('confirm-password-field').value = '';
     } catch (err) {
-        showMessage('password-message', err.message, 'error');
+        alert('Error updating password: ' + err.message);
     }
 }
 
-// ─── Helper ───────────────────────────────────────────────────────────────────
+// AI API Key Handling
+function handleAiKey() {
+    const aiKeyInput = document.getElementById('aiApiKey');
+    const saveAiKeyBtn = document.getElementById('saveAiKey');
 
-function showMessage(elementId, text, type) {
-    const el = document.getElementById(elementId);
-    if (!el) return;
-    el.innerHTML = `<div class="alert-${type}-custom">${text}</div>`;
-    setTimeout(() => { el.innerHTML = ''; }, 4000);
+    if (aiKeyInput) {
+        aiKeyInput.value = localStorage.getItem('ai_api_key') || '';
+    }
+
+    if (saveAiKeyBtn) {
+        saveAiKeyBtn.onclick = () => {
+            const key = aiKeyInput.value.trim();
+            localStorage.setItem('ai_api_key', key);
+            alert('AI API Key saved locally!');
+        };
+    }
 }
-
-// ─── Init ─────────────────────────────────────────────────────────────────────
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Ensure profile-message div exists after Save button
-    const saveBtn = document.querySelector('.btn-save');
-    if (saveBtn && !document.getElementById('profile-message')) {
-        const div = document.createElement('div');
-        div.id = 'profile-message';
-        div.className = 'mt-3';
-        saveBtn.parentNode.insertBefore(div, saveBtn.nextSibling);
-    }
     loadSettings();
+    handleAiKey();
+    
+    document.getElementById('profileForm')?.addEventListener('submit', saveProfile);
+    document.getElementById('passwordForm')?.addEventListener('submit', updatePassword);
 });
