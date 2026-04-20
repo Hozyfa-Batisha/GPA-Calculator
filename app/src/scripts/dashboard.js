@@ -14,12 +14,19 @@ async function initDashboard() {
 
         allCoursesSets.forEach(courses => {
             courses.forEach(course => {
-                totalWeightedSum += (parseFloat(course.grade) * parseInt(course.credits));
+                totalWeightedSum += (parseFloat(course.grade_points) * parseInt(course.credits));
                 totalCredits += parseInt(course.credits);
             });
         });
 
         const cgpa = totalCredits > 0 ? (totalWeightedSum / totalCredits) : 0;
+
+        // Update Stats Cards
+        document.getElementById('stat-sems').innerText = semesters.length;
+        const totalCourses = allCoursesSets.reduce((acc, curr) => acc + curr.length, 0);
+        document.getElementById('stat-courses').innerText = totalCourses;
+        const avgCredits = semesters.length > 0 ? (totalCredits / semesters.length).toFixed(1) : '0';
+        document.getElementById('stat-avg-credits').innerText = avgCredits;
 
         document.getElementById('cgpa-value').innerText = cgpa.toFixed(2);
         document.getElementById('total-credits').innerText = totalCredits;

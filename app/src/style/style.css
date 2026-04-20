@@ -1,54 +1,50 @@
 /* 
-   PROFESSIONAL ADMIN THEME - FUSION VERSION 
-   High-Contrast & Dynamic Theme System
+   PROFESSOR-PROOF SIMPLIFIED THEME 
+   Focus: High Contrast, Zero Ambiguity, Easy to Explain
 */
 
 :root {
-    --primary-color: #3b82f6;
-    --primary-dark: #1e293b;
-    --primary-accent: #3b82f6;
-    --bg-main: #f8fafc;
+    /* Light Mode Colors */
+    --bg-main: #ffffff;
     --bg-card: #ffffff;
-    --text-main: #1e293b;
-    --text-muted: #64748b;
-    --border-color: #e2e8f0;
+    --text-main: #000000;
+    --text-muted: #555555;
+    --primary: #3b82f6;
+    --border: #dddddd;
     --white: #ffffff;
-    --transition: all 0.3s ease;
-    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 body.dark-theme {
-    --primary-color: #60a5fa;
-    --primary-dark: #020617;
-    --primary-accent: #60a5fa;
+    /* Dark Mode Colors - High Contrast */
     --bg-main: #0f172a;
     --bg-card: #1e293b;
-    --text-main: #f1f5f9;
-    --text-muted: #94a3b8;
-    --border-color: #334155;
+    --text-main: #ffffff;
+    --text-muted: #cbd5e1;
+    --primary: #60a5fa;
+    --border: #334155;
     --white: #1e293b;
 }
 
 body {
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', sans-serif;
     background-color: var(--bg-main);
     color: var(--text-main);
     margin: 0;
     display: flex;
-    transition: background-color 0.3s ease, color 0.3s ease;
+    transition: background 0.2s ease;
 }
 
+/* Sidebar - Fixed High Contrast */
 .sidebar {
     width: 260px;
     height: 100vh;
-    background-color: var(--primary-dark);
-    color: var(--white);
+    background-color: #0f172a; /* Always dark for professional look */
+    color: #ffffff;
     position: fixed;
     left: 0;
     top: 0;
     display: flex;
     flex-direction: column;
-    transition: var(--transition);
     z-index: 1000;
 }
 
@@ -64,107 +60,72 @@ body {
     list-style: none;
     padding: 1.5rem 0;
     margin: 0;
-    flex-grow: 1;
 }
 
-.sidebar-menu li {
-    padding: 0.5rem 1.5rem;
-}
+.sidebar-menu li { padding: 0.2rem 1rem; }
 
 .sidebar-menu a {
-    color: var(--text-muted);
+    color: #94a3b8;
     text-decoration: none;
-    display: flex;
-    align-items: center;
+    display: block;
     padding: 0.75rem 1rem;
     border-radius: 8px;
-    transition: var(--transition);
+    transition: 0.2s;
 }
 
 .sidebar-menu a:hover, .sidebar-menu a.active {
-    background-color: var(--primary-accent);
-    color: var(--white);
+    background-color: var(--primary);
+    color: #ffffff;
 }
 
+/* Main Content */
 .main-content {
     margin-left: 260px;
     width: calc(100% - 260px);
-    min-height: 100vh;
     padding: 2rem;
-    transition: var(--transition);
 }
 
+/* Cards - The core of the UI */
 .custom-card {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 12px;
-    box-shadow: var(--card-shadow);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+    color: var(--text-main); /* Force text color */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Text Utilities - To kill the "Gray" issue */
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.fw-bold { font-weight: 600; }
+
+/* Form Elements */
+.form-control, .form-select {
+    background-color: var(--bg-card);
     color: var(--text-main);
+    border: 1px solid var(--border);
 }
 
 .btn-primary {
-    background-color: var(--primary-accent);
+    background-color: var(--primary);
     border: none;
-    border-radius: 10px;
-    padding: 0.6rem 1.5rem;
-    font-weight: 500;
     color: white;
 }
 
-.form-control {
-    border-radius: 10px;
-    padding: 0.75rem;
-    background-color: var(--bg-card);
-    color: var(--text-main);
-    border: 1px solid var(--border-color);
-}
-
-body.no-sidebar .sidebar { display: none; }
-body.no-sidebar .main-content { margin-left: 0; width: 100%; }
-
+/* Responsive */
 @media (max-width: 768px) {
-    .sidebar { left: -260px; }
+    .sidebar { left: -260px; transition: 0.3s; }
     .sidebar.active { left: 0; }
-    .main-content { margin-left: 0; width: 100%; padding: 1rem; }
+    .main-content { margin-left: 0; width: 100%; }
 }
 
-.mobile-toggle {
-    display: none;
-    position: fixed;
-    top: 1rem;
-    right: 1rem;
-    z-index: 1100;
-    background: var(--primary-accent);
-    color: var(--white);
-    border: none;
-    border-radius: 8px;
-    padding: 0.5rem;
-    cursor: pointer;
-}
-
-.table-responsive {
-    width: 100%;
-    overflow-x: auto;
-}
-
+/* Print Mode */
 @media print {
-    .sidebar, .btn, .no-print, #chat-window, #chat-toggle {
-        display: none !important;
-    }
-    .main-content {
-        margin-left: 0 !important;
-        width: 100% !important;
-        padding: 0 !important;
-    }
-    body {
-        background-color: white !important;
-        color: black !important;
-    }
-    .custom-card {
-        box-shadow: none !important;
-        border: 1px solid #ddd !important;
-        color: black !important;
-    }
+    .sidebar, .btn, .no-print { display: none !important; }
+    .main-content { margin-left: 0; width: 100%; }
+    body { background: white; color: black; }
 }

@@ -27,8 +27,22 @@
             </div>
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label">Grade (0.0 - 4.0)</label>
-                    <input type="number" step="0.01" min="0" max="4.0" id="grade" class="form-control" required>
+                    <label class="form-label">Grade</label>
+                    <select id="grade" class="form-select" required>
+                        <option value="">-- Select Grade --</option>
+                        <option value="A">A (4.0)</option>
+                        <option value="A-">A- (3.7)</option>
+                        <option value="B+">B+ (3.3)</option>
+                        <option value="B">B (3.0)</option>
+                        <option value="B-">B- (2.7)</option>
+                        <option value="C+">C+ (2.3)</option>
+                        <option value="C">C (2.0)</option>
+                        <option value="C-">C- (1.7)</option>
+                        <option value="D+">D+ (1.3)</option>
+                        <option value="D">D (1.0)</option>
+                        <option value="D-">D- (0.7)</option>
+                        <option value="F">F (0.0)</option>
+                    </select>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label">Credits</label>
@@ -49,7 +63,6 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const courseId = urlParams.get('id');
-        const defaultSemId = urlParams.get('semester_id');
 
         async function loadData() {
             try {
@@ -57,30 +70,38 @@
                 const semSelect = document.getElementById('semId');
                 semSelect.innerHTML = '<option value="">-- Choose Semester --</option>';
                 semesters.forEach(s => {
-                    semSelect.innerHTML += `<option value="${s.id}" ${s.id == defaultSemId ? 'selected' : ''}>${s.name}</option>`;
+                    semSelect.innerHTML += `<option value="${s.id}">${s.name}</option>`;
                 });
 
                 if (courseId) {
                     document.getElementById('form-title').innerText = "Edit Course";
-                    const courses = await api.courses.getBySemester(defaultSemId || 0); // This is a simplification
-                    // Note: In a real app, we'd have a getCourseById API.
-                    // For now, we'll search for the course in all semesters.
-                    const allSems = await api.semesters.getAll();
-                    let foundCourse = null;
-                    for (const s of allSems) {
-                        const cList = await api.courses.getBySemester(s.id);
-                        const c = cList.find(course => course.id == courseId);
-                        if (c) { foundCourse = c; break; }
-                    }
+                    
+                    // To avoid the login redirect bug, we wrap the search in its own try-catch
+                    try {
+                        let foundCourse = null;
+                        for (const s of semesters) {
+                            const cList = await api.courses.getBySemester(s.id);
+                            const c = cList.find(course => course.id == courseId);
+                            if (c) { foundCourse = c; break; }
+                        }
 
-                    if (foundCourse) {
-                        document.getElementById('courseName').value = foundCourse.name;
-                        document.getElementById('grade').value = foundCourse.grade;
-                        document.getElementById('credits').value = foundCourse.credits;
-                        document.getElementById('semId').value = foundCourse.semester_id;
+                        if (foundCourse) {
+                            document.getElementById('courseName').value = foundCourse.name;
+                            document.getElementById('grade').value = foundCourse.grade;
+                            document.getElementById('credits').value = foundCourse.credits;
+                            document.getElementById('semId').value = foundCourse.semester_id;
+                        }
+                    } catch (innerErr) {
+                        console.error('Error fetching course details:', innerErr);
                     }
                 }
-            } catch (err) { window.location.href = 'login.html'; }
+            } catch (err) { 
+                console.error('General load error:', err);
+                // Only redirect to login if it's a 401 error
+                if (err.message?.includes('401')) {
+                    window.location.href = 'login.html';
+                }
+            }
         }
 
         document.getElementById('courseForm').onsubmit = async (e) => {
@@ -104,6 +125,6 @@
 
         window.onload = loadData;
     </script>
-<script src="../scripts/theme.js"></script>
+    <script src="../scripts/theme.js"></script>
 </body>
 </html>

@@ -1,115 +1,145 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Profile Settings - Student Success Hub</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="../style/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-</head>
-<body>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../style/style.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
     <div class="sidebar">
-        <div class="sidebar-header">🎓 Success Hub</div>
-        <ul class="sidebar-menu"><li><a href="#" id="chat-toggle">🤖 AI Advisor</a></li>
-            <li><a href="dashboard.html">📊 Dashboard</a></li>
-            <li><a href="semesters.html">📅 Semesters</a></li>
-            <li><a href="courses.html">📚 Courses</a></li>
-            <li><a href="calculator.html">🧮 GPA Calculator</a></li>
-            <li><a href="simulator.html">🎯 Goal Simulator</a></li>
-            <li><a href="transcript.html">📜 Transcript</a></li>
-            <li><a href="settings.html" class="active">👤 Profile Settings</a></li>
-            <li class="mt-auto"><a href="#" id="logoutBtn" style="color: #f87171;">🚪 Logout</a></li>
-        </ul>
+      <div class="sidebar-header">🎓 Success Hub</div>
+      <ul class="sidebar-menu">
+        <li><a href="dashboard.html">📊 Dashboard</a></li>
+        <li><a href="semesters.html">📅 Semesters</a></li>
+        <li><a href="courses.html">📚 Courses</a></li>
+        <li><a href="calculator.html">🧮 GPA Calculator</a></li>
+        <li><a href="simulator.html">🎯 Goal Simulator</a></li>
+        <li><a href="mark_scaling.html">📈 Mark Scaling</a></li>
+        <li><a href="transcript.html">📜 Transcript</a></li>
+        <li><a href="settings.html" class="active">👤 Profile Settings</a></li>
+        <li class="mt-auto">
+          <a href="#" id="logoutBtn" style="color: #f87171">🚪 Logout</a>
+        </li>
+      </ul>
     </div>
 
-    <button id="mobile-toggle" class="mobile-toggle" aria-label="Toggle Menu">
-        ☰
-    </button>
-
     <div class="main-content">
-        <div class="mb-4">
-            <h2 class="fw-bold">Profile Settings</h2>
+      <div class="mb-4">
+        <h2 class="fw-bold">Profile Settings</h2>
+      </div>
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="custom-card">
+            <h5 class="fw-bold mb-3">Account Information</h5>
+            <form id="profileForm">
+              <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input
+                  type="text"
+                  id="username-field"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Full Name</label>
+                <input
+                  type="text"
+                  id="fullname-field"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">University Email</label>
+                <input
+                  type="email"
+                  id="email-field"
+                  class="form-control"
+                  required
+                />
+              </div>
+              <button type="submit" class="btn btn-primary w-100">
+                Save Account Info
+              </button>
+            </form>
+          </div>
+
+          <div class="custom-card mt-4">
+            <h5 class="fw-bold mb-3">Security</h5>
+            <form id="passwordForm">
+              <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input
+                  type="password"
+                  id="new-password-field"
+                  class="form-control"
+                  placeholder="Enter new password"
+                />
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Confirm New Password</label>
+                <input
+                  type="password"
+                  id="confirm-password-field"
+                  class="form-control"
+                  placeholder="Repeat new password"
+                />
+              </div>
+              <button type="submit" class="btn btn-outline-primary w-100">
+                Update Password
+              </button>
+            </form>
+          </div>
         </div>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="custom-card">
-                    <form id="profileForm">
-                        <div class="mb-3">
-                            <label class="form-label">Full Name</label>
-                            <input type="text" id="userName" class="form-control" required>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">University Email</label>
-                            <input type="email" id="userEmail" class="form-control" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                    </form>
-                </div>
+        <div class="col-md-6">
+          <div class="custom-card">
+            <h5 class="fw-bold mb-3">Appearance</h5>
+            <div class="form-check form-switch">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="themeToggle"
+              />
+              <label class="form-check-label" for="themeToggle"
+                >Dark Mode</label
+              >
             </div>
-        </div>
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="custom-card">
-                    <h4 class="fw-bold mb-3">Appearance</h4>
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="themeToggle">
-                        <label class="form-check-label" for="themeToggle">Dark Mode</label>
-                    </div>
-                </div>
-                <div class="custom-card mt-4">
-                    <h4 class="fw-bold mb-3">AI Configuration</h4>
-                    <div class="mb-3">
-                        <label class="form-label">OpenAI API Key</label>
-                        <input type="password" id="aiApiKey" class="form-control" placeholder="sk-...">
-                        <div class="form-text">Your key is stored locally in your browser.</div>
-                    </div>
-                    <button id="saveAiKey" class="btn btn-outline-primary">Save API Key</button>
-                </div>
+          </div>
+          <div class="custom-card mt-4">
+            <h5 class="fw-bold mb-3">AI Configuration</h5>
+            <div class="mb-3">
+              <label class="form-label">Gemini API Key</label>
+              <input
+                type="password"
+                id="aiApiKey"
+                class="form-control"
+                placeholder="Enter your key"
+              />
+              <div class="form-text">
+                Your key is stored locally in your browser.
+              </div>
             </div>
+            <button id="saveAiKey" class="btn btn-outline-primary w-100">
+              Save API Key
+            </button>
+          </div>
         </div>
+      </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="../scripts/ui.js"></script>
     <script src="../scripts/api.js" type="module"></script>
-    <script type="module">
-        import { api } from '../scripts/api.js';
-        async function loadProfile() {
-            try {
-                const user = await api.user.getProfile();
-                document.getElementById('userName').value = user.full_name;
-                document.getElementById('userEmail').value = user.email;
-            } catch (err) { window.location.href = 'login.html'; }
-        }
-        document.getElementById('profileForm').onsubmit = async (e) => {
-            e.preventDefault();
-            try {
-                await api.user.updateProfile({
-                    full_name: document.getElementById('userName').value,
-                    email: document.getElementById('userEmail').value
-                });
-                alert("Profile updated!");
-            } catch (err) { alert(err.message); }
-        };
-
-        // AI API Key Handling
-        const aiKeyInput = document.getElementById('aiApiKey');
-        const saveAiKeyBtn = document.getElementById('saveAiKey');
-
-        if (aiKeyInput) {
-            aiKeyInput.value = localStorage.getItem('ai_api_key') || '';
-        }
-
-        if (saveAiKeyBtn) {
-            saveAiKeyBtn.onclick = () => {
-                const key = aiKeyInput.value.trim();
-                localStorage.setItem('ai_api_key', key);
-                alert("AI API Key saved locally!");
-            };
-        }
-
-        window.onload = loadProfile;
-    </script>
+    <script src="../scripts/settings.js" type="module"></script>
     <script src="../scripts/theme.js"></script>
-</body>
+  </body>
 </html>

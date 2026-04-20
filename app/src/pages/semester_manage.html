@@ -2,8 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device, and initial-scale=1.0">
-    <title>Manage Semesters - Student Success Hub</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Semester - Student Success Hub</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../style/style.css">
 </head>
@@ -11,8 +11,8 @@
 
     <div class="custom-card shadow-lg" style="width: 420px;">
         <div class="text-center mb-4">
-            <h2 class="fw-bold">Add Semester</h2>
-            <p class="text-muted">Create a new semester to organize your courses</p>
+            <h2 class="fw-bold" id="form-title">Add Semester</h2>
+            <p class="text-muted" id="form-subtitle">Create a new semester to organize your courses</p>
         </div>
 
         <form id="semesterForm">
@@ -20,7 +20,7 @@
                 <label class="form-label">Semester Name</label>
                 <input type="text" id="semName" class="form-control" placeholder="e.g. Fall 2024" required>
             </div>
-            <button type="submit" class="btn btn-primary w-100 py-2">Create Semester</button>
+            <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-2">Create Semester</button>
         </form>
 
         <div class="text-center mt-4">
@@ -33,18 +33,45 @@
     <script type="module">
         import { api } from '../scripts/api.js';
         
+        const urlParams = new URLSearchParams(window.location.search);
+        const semesterId = urlParams.get('id');
         const form = document.getElementById('semesterForm');
+
+        async function loadSemester() {
+            if (!semesterId) return;
+
+            try {
+                const semesters = await api.semesters.getAll();
+                const sem = semesters.find(s => s.id == semesterId);
+                if (sem) {
+                    document.getElementById('form-title').innerText = "Edit Semester";
+                    document.getElementById('form-subtitle').innerText = "Update the name of your semester";
+                    document.getElementById('semName').value = sem.name;
+                    document.getElementById('submitBtn').innerText = "Save Changes";
+                }
+            } catch (err) {
+                console.error('Error loading semester:', err);
+            }
+        }
+
         form.onsubmit = async (e) => {
             e.preventDefault();
             const name = document.getElementById('semName').value.trim();
             try {
-                await api.semesters.create(name);
-                alert("Semester created successfully!");
+                if (semesterId) {
+                    await api.semesters.update(semesterId, { name });
+                    alert("Semester updated successfully!");
+                } else {
+                    await api.semesters.create(name);
+                    alert("Semester created successfully!");
+                }
                 window.location.href = 'semesters.html';
             } catch (err) {
                 alert("Error: " + err.message);
             }
         };
+
+        window.onload = loadSemester;
     </script>
 </body>
 </html>

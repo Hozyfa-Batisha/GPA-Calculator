@@ -6,7 +6,7 @@ if (loginForm) {
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         // Support both 'username' and 'email' for login
-        const identifier = document.getElementById('email').value; 
+        const identifier = document.getElementById('username').value; 
         const password = document.getElementById('password').value;
 
         try {
