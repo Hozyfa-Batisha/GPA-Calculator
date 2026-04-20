@@ -24,8 +24,6 @@ CREATE TABLE semesters (
     id         INT AUTO_INCREMENT PRIMARY KEY,
     name       VARCHAR(100) NOT NULL,           -- e.g. "Fall 2024"
     user_id    INT NOT NULL,
-    start_date DATE DEFAULT NULL,
-    end_date   DATE DEFAULT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );

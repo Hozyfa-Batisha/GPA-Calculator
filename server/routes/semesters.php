@@ -19,7 +19,7 @@ if ($method === 'GET' && !$id) {
     try {
         $stmt = $pdo->prepare("
             SELECT
-                s.id, s.name, s.start_date, s.end_date,
+                s.id, s.name,
                 COUNT(c.id)                                          AS course_count,
                 SUM(c.credits)                                       AS total_credits,
                 ROUND(
@@ -31,7 +31,7 @@ if ($method === 'GET' && !$id) {
             LEFT JOIN courses c ON c.semester_id = s.id
             WHERE s.user_id = ?
             GROUP BY s.id
-            ORDER BY s.start_date DESC, s.id DESC
+            ORDER BY s.id DESC
         ");
         $stmt->execute([$userId]);
         respond($stmt->fetchAll());
@@ -47,14 +47,8 @@ if ($method === 'POST') {
         $name = trim($data['name'] ?? '');
         if (!$name) respondError('Semester name is required.');
 
-        $stmt = $pdo->prepare("INSERT INTO semesters (name, user_id, start_date, end_date)
-                                VALUES (?, ?, ?, ?)");
-        $stmt->execute([
-            $name,
-            $userId,
-            $data['start_date'] ?? null,
-            $data['end_date']   ?? null,
-        ]);
+        $stmt = $pdo->prepare("INSERT INTO semesters (name, user_id) VALUES (?, ?)");
+        $stmt->execute([$name, $userId]);
         respond(['message' => 'Semester created.', 'id' => (int) $pdo->lastInsertId()], 201);
     } catch (PDOException $e) {
         respondError('Database Error: ' . $e->getMessage(), 500);
@@ -64,7 +58,6 @@ if ($method === 'POST') {
 // ── PUT /api/semesters?id=:id ────────────────────────────────
 if ($method === 'PUT' && $id) {
     try {
-        // Verify ownership
         $check = $pdo->prepare("SELECT id FROM semesters WHERE id = ? AND user_id = ?");
         $check->execute([$id, $userId]);
         if (!$check->fetch()) respondError('Semester not found.', 404);
@@ -73,15 +66,8 @@ if ($method === 'PUT' && $id) {
         $name = isset($data['name']) ? trim($data['name']) : null;
         if ($name === '') respondError('Semester name cannot be empty.');
 
-        $stmt = $pdo->prepare("UPDATE semesters
-                                SET name = COALESCE(?, name), start_date = COALESCE(?, start_date), end_date = COALESCE(?, end_date)
-                                WHERE id = ?");
-        $stmt->execute([
-            $name,
-            $data['start_date'] ?? null,
-            $data['end_date']   ?? null,
-            $id,
-        ]);
+        $stmt = $pdo->prepare("UPDATE semesters SET name = COALESCE(?, name) WHERE id = ?");
+        $stmt->execute([$name, $id]);
         respond(['message' => 'Semester updated.']);
     } catch (PDOException $e) {
         respondError('Database Error: ' . $e->getMessage(), 500);

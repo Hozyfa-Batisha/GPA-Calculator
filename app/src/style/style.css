@@ -1,40 +1,45 @@
 /* 
-   PROFESSIONAL ADMIN THEME - FUSION VERSION
-   Merged from the Student Success Hub UI.
+   PROFESSIONAL ADMIN THEME - FUSION VERSION 
+   High-Contrast & Dynamic Theme System
 */
 
 :root {
-    --sidebar-width: 260px;
+    --primary-color: #3b82f6;
     --primary-dark: #1e293b;
     --primary-accent: #3b82f6;
-    --bg-light: #f8fafc;
-    --text-main: #334155;
-    --text-muted: #94a3b8;
+    --bg-main: #f8fafc;
+    --bg-card: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border-color: #e2e8f0;
     --white: #ffffff;
     --transition: all 0.3s ease;
-    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
 body.dark-theme {
+    --primary-color: #60a5fa;
     --primary-dark: #020617;
     --primary-accent: #60a5fa;
-    --bg-light: #0f172a;
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
     --text-main: #f1f5f9;
     --text-muted: #94a3b8;
+    --border-color: #334155;
     --white: #1e293b;
-    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 }
 
 body {
     font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-light);
+    background-color: var(--bg-main);
     color: var(--text-main);
     margin: 0;
     display: flex;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .sidebar {
-    width: var(--sidebar-width);
+    width: 260px;
     height: 100vh;
     background-color: var(--primary-dark);
     color: var(--white);
@@ -76,26 +81,27 @@ body {
     transition: var(--transition);
 }
 
-.sidebar-menu a:hover, .sidebar-//opt/data/home/projects/hozyfa_version/app/src/style/style.cssmenu a.active {
+.sidebar-menu a:hover, .sidebar-menu a.active {
     background-color: var(--primary-accent);
     color: var(--white);
 }
 
 .main-content {
-    margin-left: var(--sidebar-width);
-    width: calc(100% - var(--sidebar-width));
+    margin-left: 260px;
+    width: calc(100% - 260px);
     min-height: 100vh;
     padding: 2rem;
     transition: var(--transition);
 }
 
 .custom-card {
-    background: var(--white);
-    border: none;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     box-shadow: var(--card-shadow);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+    color: var(--text-main);
 }
 
 .btn-primary {
@@ -104,66 +110,47 @@ body {
     border-radius: 10px;
     padding: 0.6rem 1.5rem;
     font-weight: 500;
+    color: white;
 }
 
 .form-control {
     border-radius: 10px;
     padding: 0.75rem;
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border-color);
 }
 
 body.no-sidebar .sidebar { display: none; }
 body.no-sidebar .main-content { margin-left: 0; width: 100%; }
 
-/* Responsive Design */
 @media (max-width: 768px) {
-    .sidebar {
-        left: calc(var(--sidebar-width) * -1);
-    }
-    .sidebar.active {
-        left: 0;
-    }
-    .main-content {
-        margin-left: 0;
-        width: 100%;
-        padding: 1rem;
-    }
-    .mobile-toggle {
-        display: flex;
-        position: fixed;
-        top: 1rem;
-        right: 1rem;
-        z-index: 1100;
-        background: var(--primary-accent);
-        color: var(--white);
-        border: none;
-        border-radius: 8px;
-        padding: 0.5rem;
-        cursor: pointer;
-        box-shadow: var(--card-shadow);
-    }
+    .sidebar { left: -260px; }
+    .sidebar.active { left: 0; }
+    .main-content { margin-left: 0; width: 100%; padding: 1rem; }
 }
 
 .mobile-toggle {
     display: none;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1100;
+    background: var(--primary-accent);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem;
+    cursor: pointer;
 }
 
-/* Table Responsiveness */
 .table-responsive {
     width: 100%;
     overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    margin-bottom: 1rem;
-}
-
-/* Card Optimization */
-@media (max-width: 576px) {
-    .custom-card {
-        padding: 1rem;
-    }
 }
 
 @media print {
-    .sidebar, .btn, .no-print {
+    .sidebar, .btn, .no-print, #chat-window, #chat-toggle {
         display: none !important;
     }
     .main-content {
@@ -178,7 +165,6 @@ body.no-sidebar .main-content { margin-left: 0; width: 100%; }
     .custom-card {
         box-shadow: none !important;
         border: 1px solid #ddd !important;
+        color: black !important;
     }
 }
-
-
