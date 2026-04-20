@@ -22,9 +22,9 @@ if ($method === 'GET' && !$id) {
             COUNT(c.id)                                          AS course_count,
             SUM(c.credits)                                       AS total_credits,
             ROUND(
-                SUM(c.grade_points * c.credits) /
+                LEAST(4.0, SUM(c.grade_points * c.credits) /
                 NULLIF(SUM(CASE WHEN c.grade_points IS NOT NULL
-                                THEN c.credits END), 0)
+                                THEN c.credits END), 0))
             , 2)                                                  AS gpa
         FROM semesters s
         LEFT JOIN courses c ON c.semester_id = s.id
@@ -61,11 +61,14 @@ if ($method === 'PUT' && $id) {
     if (!$check->fetch()) respondError('Semester not found.', 404);
 
     $data = getBody();
+    $name = isset($data['name']) ? trim($data['name']) : null;
+    if ($name === '') respondError('Semester name cannot be empty.');
+
     $stmt = $pdo->prepare("UPDATE semesters
-                            SET name = ?, start_date = ?, end_date = ?
+                            SET name = COALESCE(?, name), start_date = COALESCE(?, start_date), end_date = COALESCE(?, end_date)
                             WHERE id = ?");
     $stmt->execute([
-        $data['name']       ?? null,
+        $name,
         $data['start_date'] ?? null,
         $data['end_date']   ?? null,
         $id,

@@ -9,8 +9,20 @@
     --primary-accent: #3b82f6;
     --bg-light: #f8fafc;
     --text-main: #334155;
+    --text-muted: #94a3b8;
     --white: #ffffff;
     --transition: all 0.3s ease;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+body.dark-theme {
+    --primary-dark: #020617;
+    --primary-accent: #60a5fa;
+    --bg-light: #0f172a;
+    --text-main: #f1f5f9;
+    --text-muted: #94a3b8;
+    --white: #1e293b;
+    --card-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
 }
 
 body {
@@ -55,7 +67,7 @@ body {
 }
 
 .sidebar-menu a {
-    color: #94a3b8;
+    color: var(--text-muted);
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -81,7 +93,7 @@ body {
     background: var(--white);
     border: none;
     border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    box-shadow: var(--card-shadow);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
 }
@@ -101,3 +113,72 @@ body {
 
 body.no-sidebar .sidebar { display: none; }
 body.no-sidebar .main-content { margin-left: 0; width: 100%; }
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        left: calc(var(--sidebar-width) * -1);
+    }
+    .sidebar.active {
+        left: 0;
+    }
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 1rem;
+    }
+    .mobile-toggle {
+        display: flex;
+        position: fixed;
+        top: 1rem;
+        right: 1rem;
+        z-index: 1100;
+        background: var(--primary-accent);
+        color: var(--white);
+        border: none;
+        border-radius: 8px;
+        padding: 0.5rem;
+        cursor: pointer;
+        box-shadow: var(--card-shadow);
+    }
+}
+
+.mobile-toggle {
+    display: none;
+}
+
+/* Table Responsiveness */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 1rem;
+}
+
+/* Card Optimization */
+@media (max-width: 576px) {
+    .custom-card {
+        padding: 1rem;
+    }
+}
+
+@media print {
+    .sidebar, .btn, .no-print {
+        display: none !important;
+    }
+    .main-content {
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 0 !important;
+    }
+    body {
+        background-color: white !important;
+        color: black !important;
+    }
+    .custom-card {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+}
+
+

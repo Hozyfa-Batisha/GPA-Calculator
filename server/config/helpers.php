@@ -34,6 +34,10 @@ function getBody(): array {
 
 // ── Grade → grade points map ─────────────────────────────────
 function gradeToPoints(string $grade): ?float {
+    if (is_numeric($grade)) {
+        $val = (float)$grade;
+        return ($val >= 0 && $val <= 4.0) ? $val : null;
+    }
     $map = [
         'A'  => 4.0, 'A-' => 3.7,
         'B+' => 3.3, 'B'  => 3.0, 'B-' => 2.7,
