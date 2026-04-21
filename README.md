@@ -1,74 +1,43 @@
-# GPA Calculator
+# GPA Calculator & Academic Planner
+
 *7anafoly elsokara 7alwa eldonya mnawara*
 
-## pages
+A professional, full-stack academic tracking tool designed to help students manage semesters, track course performance, and simulate future academic goals.
 
--   Anas:
-    - **Login / Register**: Create an account and log in securely.
-    - **Home Dashboard**: See all your semesters at a glance(cards), with each semester's GPA, Courses, Credits and your overall CGPA, total of Course, Credits.
-- Hozyfa:
-    - **GPA Calculator**: Add courses to any semester — enter the course name, grade (A to F), and credit hours. The GPA for that semester is calculated automatically.
-    - **Course Rankings**: See all your courses ranked from best to worst grade across all semesters.
-- Yasmen:  
-    - **Transcript**: Full academic record across all semesters.
-    - **User Settings**: Manage and edit the profile information.
+## 📚 Documentation
+For a complete guide, technical justifications, and the presentation script, please refer to the **[Project Documentation](./PROJECT_DOCUMENTATION.md)**.
+
 ---
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 | Layer     | Technology                           |
 |-----------|--------------------------------------|
-| Frontend  | Vanilla                              |
-| Styling   | Botstrab CSS                         |
-| Backend   | php                                  |
+| Frontend  | Vanilla JS, HTML5, CSS3               |
+| Styling   | Custom Variable-based Theme           |
+| Backend   | PHP (REST API)                        |
 | Database  | MySQL                                |
-| API       | REST API                             |
 
 ---
 
-## Project Structure
+## 📂 Project Structure
 
 ```
 .
-├── app/                      # frontend      
+├── app/                      # Frontend
 │      └── src/
-│           ├── pages/        # Login, Home, Semester, Rankings, etc..
-│           ├── scripts/      # The javascripts files
-│           └── styles/       # The CSS files
-├─── server/                  # backend
-│      └── src/
-│           └── routes/
-│      
-├── database/                 # DB scripts, schema
-└── README.md
+│           ├── pages/        # Login, Dashboard, etc.
+│           ├── scripts/      # Vanilla JS Logic
+│           └── style/        # Theme & Page CSS
+├── server/                   # Backend
+│      └── routes/            # API Endpoints
+├── database/                 # SQL Schema & Seeds
+└── PROJECT_DOCUMENTATION.md  # Full Guide & Defense Strategy
 ```
 
 ---
 
-## Database (in principle)
-
-**users**
-- `id` — primary key
-- `username` — unique, used for login
-- `password_hash` — hashed with bcryptjs
-- `name` — display name 
-
-**semesters**
-- `id` — primary key
-- `name` — e.g. "Fall 2024"
-- `user_id` — links to the user who owns it
-
-**courses**
-- `id` — primary key
-- `name` — e.g. "Data Structures"
-- `grade` — one of: A, A-, B+, B, B-, C+, C, C-, D+, D, D-, F
-- `credits` — 1 to 6 credit hours
-- `grade_points` — calculated from grade (A = 4.0, F = 0.0)
-- `semester_id` — links to the semester
-
----
-
-## GPA Formula
+## 🧮 GPA Formula
 
 GPA is calculated using the standard weighted average:
 
@@ -76,26 +45,17 @@ GPA is calculated using the standard weighted average:
 GPA = (sum of grade_points × credits) / (total credit hours)
 ```
 
-Grade scale used:
-
-| Grade | Points |
-|-------|--------|
-| A     | 4.0    |
-| A-    | 3.7    |
-| B+    | 3.3    |
-| B     | 3.0    |
-| B-    | 2.7    |
-| C+    | 2.3    |
-| C     | 2.0    |
-| C-    | 1.7    |
-| D+    | 1.3    |
-| D     | 1.0    |
-| D-    | 0.7    |
-| F     | 0.0    |
+**Grade Scale:**
+- A: 4.0, A-: 3.7, B+: 3.3, B: 3.0, B-: 2.7, C+: 2.3, C: 2.0, C-: 1.7, D+: 1.3, D: 1.0, D-: 0.7, F: 0.0
 
 ---
 
-## API Endpoint
-    (┬┬﹏┬┬)
-
----
+## 🔌 API Endpoints
+All endpoints are prefixed with `/api/` and require session authentication.
+- `/api/auth` - Registration, Login, Logout
+- `/api/semesters` - Semester management
+- `/api/courses` - Course and Grade tracking
+- `/api/tasks` - Academic task management
+- `/api/schedule` - Weekly class scheduling
+- `/api/users/me` - Profile management
+- `/api/ai/chat` - Academic AI Advisor proxy
