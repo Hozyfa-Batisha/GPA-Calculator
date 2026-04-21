@@ -1,13 +1,13 @@
 /* ===== SETTINGS PAGE CSS ===== */
 
 .user-pill {
-    background: rgba(255,255,255,0.15);
-    color: var(--white);
+    background: var(--primary-light);
+    color: var(--primary);
     padding: 0.3rem 0.9rem;
     border-radius: 20px;
     font-size: 0.9rem;
     cursor: pointer;
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid var(--border);
 }
 
 .back-btn {
@@ -17,7 +17,7 @@
     width: 34px;
     height: 34px;
     border-radius: 50%;
-    background: var(--white);
+    background: var(--bg-card);
     color: var(--text-main);
     text-decoration: none;
     font-size: 1.1rem;
@@ -26,7 +26,7 @@
     transition: var(--transition);
 }
 .back-btn:hover {
-    background: var(--bg-light);
+    background: var(--bg-main);
     color: var(--text-main);
 }
 
@@ -48,7 +48,7 @@
 
 /* Settings Card */
 .settings-card {
-    background: var(--white);
+    background: var(--bg-card);
     border-radius: 16px;
     padding: 1.8rem;
     box-shadow: 0 4px 20px rgba(0,0,0,0.06);
@@ -90,19 +90,19 @@
 .form-control-custom {
     border-radius: 10px;
     padding: 0.65rem 0.9rem;
-    border: 1px solid var(--bg-light);
+    border: 1px solid var(--border);
     font-size: 0.88rem;
-    background: var(--white);
+    background: var(--bg-card);
     color: var(--text-main);
     transition: var(--transition);
 }
 .form-control-custom:focus {
-    border-color: var(--primary-light);
-    box-shadow: 0 0 0 0.2rem rgba(92,107,192,0.2);
+    border-color: var(--primary);
+    box-shadow: 0 0 0 0.2rem rgba(59, 130, 246, 0.2);
     outline: none;
 }
 .form-control-custom:disabled {
-    background: var(--bg-light);
+    background: var(--bg-main);
     color: var(--text-muted);
     cursor: not-allowed;
 }
@@ -120,7 +120,7 @@
 
 /* Save profile button */
 .btn-save {
-    background-color: var(--primary-color);
+    background-color: var(--primary);
     color: var(--white);
     border: none;
     border-radius: 10px;
@@ -137,9 +137,9 @@
 
 /* Change password button */
 .btn-change-password {
-    background: var(--white);
+    background: var(--bg-card);
     color: var(--text-main);
-    border: 1px solid var(--bg-light);
+    border: 1px solid var(--border);
     border-radius: 10px;
     padding: 0.55rem 1.3rem;
     font-size: 0.88rem;
@@ -147,7 +147,7 @@
     transition: var(--transition);
 }
 .btn-change-password:hover {
-    background: var(--bg-light);
+    background: var(--bg-main);
     border-color: var(--text-muted);
 }
 

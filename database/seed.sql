@@ -1,50 +1,72 @@
 -- ============================================================
---  Seed Data — for development/testing
+--  Enhanced Mock Seed Data — Presentation Ready
 -- ============================================================
 USE gpa_calculator;
 
--- 1. Create a demo user
+-- Clear existing data to avoid duplicates
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE schedule;
+TRUNCATE TABLE tasks;
+TRUNCATE TABLE courses;
+TRUNCATE TABLE semesters;
+TRUNCATE TABLE users;
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- 1. Create the Demo User
 INSERT INTO users (username, password_hash, name, email) 
-VALUES ('anas', '$2y$10$exampleHashForAnas000000000000000000000000000000000000', 'Anas', 'anas@example.com')
-ON DUPLICATE KEY UPDATE name=VALUES(name);
+VALUES ('anas', '$2y$10$exampleHashForAnas000000000000000000000000000000000000', 'Anas Mohammed', 'anas@example.com');
 
--- 2. Set a variable for the demo user ID
-SET @demo_user_id = (SELECT id FROM users WHERE username = 'anas');
+SET @userId = (SELECT id FROM users WHERE username = 'anas');
 
--- 3. Create semesters for the demo user
-INSERT INTO semesters (name, user_id, start_date, end_date) VALUES
-('Fall 2024', @demo_user_id, '2024-09-01', '2024-12-31'),
-('Spring 2025', @demo_user_id, '2025-02-01', '2025-06-30');
+-- 2. Create Semesters (Strictly matching schema: id, name, user_id)
+INSERT INTO semesters (name, user_id) VALUES 
+('Fall 2023', @userId), 
+('Spring 2024', @userId), 
+('Fall 2024', @userId);
 
--- 4. Get the IDs of the created semesters
-SET @sem1 = (SELECT id FROM semesters WHERE name = 'Fall 2024' AND user_id = @demo_user_id LIMIT 1);
-SET @sem2 = (SELECT id FROM semesters WHERE name = 'Spring 2025' AND user_id = @demo_user_id LIMIT 1);
+SET @sem1 = (SELECT id FROM semesters WHERE name = 'Fall 2023' AND user_id = @userId);
+SET @sem2 = (SELECT id FROM semesters WHERE name = 'Spring 2024' AND user_id = @userId);
+SET @sem3 = (SELECT id FROM semesters WHERE name = 'Fall 2024' AND user_id = @userId);
 
--- 5. Courses for semester 1
+-- 3. Courses for Semester 1 (The "Honors" Semester)
 INSERT INTO courses (name, grade, credits, grade_points, semester_id, progress) VALUES
-('Data Structures',     'A',  3, 4.0, @sem1, 100),
-('Calculus II',         'B+', 3, 3.3, @sem1, 100),
-('English Composition', 'A-', 2, 3.7, @sem1, 100);
+('Introduction to Programming', 'A', 3, 4.0, @sem1, 100),
+('Calculus I', 'A-', 3, 3.7, @sem1, 100),
+('English Composition', 'B+', 2, 3.3, @sem1, 100),
+('Physics I', 'A', 3, 4.0, @sem1, 100);
 
--- 6. Courses for semester 2
+-- 4. Courses for Semester 2 (The "Struggle" Semester)
 INSERT INTO courses (name, grade, credits, grade_points, semester_id, progress) VALUES
-('Algorithms',          'B',  3, 3.0, @sem2, 60),
-('Operating Systems',   NULL, 3, NULL, @sem2, 30);
+('Data Structures', 'B', 3, 3.0, @sem2, 100),
+('Discrete Mathematics', 'C+', 3, 2.3, @sem2, 100),
+('Digital Logic', 'B-', 3, 2.7, @sem2, 100),
+('Linear Algebra', 'C', 3, 2.0, @sem2, 100);
 
--- 7. Tasks for demo user
--- Use a subquery to get a course ID from the demo user's courses
-SET @course_id = (SELECT id FROM courses WHERE user_id = @demo_user_id LIMIT 1);
+-- 5. Courses for Semester 3 (The "Current" Semester)
+INSERT INTO courses (name, grade, credits, grade_points, semester_id, progress) VALUES
+('Operating Systems', NULL, 3, NULL, @sem3, 45),
+('Database Systems', 'B+', 3, 3.3, @sem3, 60),
+('Software Engineering', NULL, 3, NULL, @sem3, 30),
+('AI Fundamentals', 'A', 3, 4.0, @sem3, 50);
+
+-- 6. Tasks (Mix of statuses for demonstration)
+-- Get a course ID from current semester
+SET @course_os = (SELECT id FROM courses WHERE name = 'Operating Systems' AND semester_id = @sem3);
+SET @course_db = (SELECT id FROM courses WHERE name = 'Database Systems' AND semester_id = @sem3);
+SET @course_se = (SELECT id FROM courses WHERE name = 'Software Engineering' AND semester_id = @sem3);
 
 INSERT INTO tasks (title, description, due_date, status, course_id, user_id) VALUES
-('Assignment 2',    'Implement a binary search tree', '2025-03-15 23:59:00', 'done',    @course_id, @demo_user_id),
-('Midterm Exam',    NULL,                             '2025-03-20 10:00:00', 'overdue', @course_id, @demo_user_id),
-('Lab Report 3',    'Write up the process scheduling lab', '2025-04-25 23:59:00', 'pending', @course_id, @demo_user_id);
+('OS Project: Kernel Threading', 'Implement a basic thread scheduler', '2024-11-15 23:59:00', 'done', @course_os, @userId),
+('DB Lab: Normalization', 'Convert the library schema to 3NF', '2024-10-20 10:00:00', 'overdue', @course_db, @userId),
+('SE Midterm Review', 'Read chapters 4-8', '2024-12-01 15:00:00', 'pending', @course_se, @userId),
+('AI Essay', 'Discuss the ethics of LLMs', '2024-11-25 23:59:00', 'pending', (SELECT id FROM courses WHERE name = 'AI Fundamentals' AND semester_id = @sem3), @userId);
 
--- 8. Schedule for demo user courses
-INSERT INTO schedule (course_id, day_of_week, start_time, end_time, location)
-SELECT id, 'Mon', '09:00:00', '10:30:00', 'Building A - Room 101'
-FROM courses WHERE semester_id = @sem1 LIMIT 1;
-
-INSERT INTO schedule (course_id, day_of_week, start_time, end_time, location)
-SELECT id, 'Tue', '11:00:00', '12:30:00', 'Building B - Lab 3'
-FROM courses WHERE semester_id = @sem2 LIMIT 1;
+-- 7. Weekly Schedule (Detailed for current semester)
+INSERT INTO schedule (course_id, day_of_week, start_time, end_time, location) VALUES
+(@course_os, 'Mon', '09:00:00', '10:30:00', 'Engineering Hall - Room 101'),
+(@course_os, 'Wed', '09:00:00', '10:30:00', 'Engineering Hall - Room 101'),
+(@course_db, 'Tue', '11:00:00', '12:30:00', 'CS Lab 2'),
+(@course_db, 'Thu', '11:00:00', '12:30:00', 'CS Lab 2'),
+(@course_se, 'Mon', '14:00:00', '15:30:00', 'Seminar Room A'),
+(@course_se, 'Wed', '14:00:00', '15:30:00', 'Seminar Room A'),
+((SELECT id FROM courses WHERE name = 'AI Fundamentals' AND semester_id = @sem3), 'Fri', '10:00:00', '12:00:00', 'Main Auditorium');
