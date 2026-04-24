@@ -13,7 +13,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 
 // ── GET /api/users/me ────────────────────────────────────────
 if ($method === 'GET') {
-    $stmt = $pdo->prepare("SELECT id, username, name, email, created_at FROM users WHERE id = ?");
+    $stmt = $pdo->prepare("SELECT id, username, name AS full_name, email, created_at FROM users WHERE id = ?");
     $stmt->execute([$userId]);
     $user = $stmt->fetch();
     if (!$user) respondError('User not found.', 404);
@@ -24,25 +24,38 @@ if ($method === 'GET') {
 if ($method === 'PUT') {
     $data = getBody();
 
+    $name = isset($data['full_name']) ? trim($data['full_name']) : null;
+    if ($name === '') respondError('Name cannot be empty.');
+
+    $username = isset($data['username']) ? trim($data['username']) : null;
+    if ($username === '') respondError('Username cannot be empty.');
+    if ($email !== null) {
+        if ($email === '') respondError('Email cannot be empty.');
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) respondError('Invalid email format.');
+    }
+
     // Password change (optional)
     $newHash = null;
     if (!empty($data['password'])) {
+        if (strlen($data['password']) < 6) respondError('Password must be at least 6 characters.');
         $newHash = password_hash($data['password'], PASSWORD_BCRYPT);
     }
 
     $stmt = $pdo->prepare("
         UPDATE users
-        SET name          = COALESCE(?, name),
+        SET username       = COALESCE(?, username),
+            name          = COALESCE(?, name),
             email         = COALESCE(?, email),
             password_hash = COALESCE(?, password_hash)
         WHERE id = ?
     ");
-    $stmt->execute([
-        $data['name']  ?? null,
-        $data['email'] ?? null,
-        $newHash,
-        $userId,
-    ]);
+        $stmt->execute([
+            $username,
+            $name,
+            $email,
+            $newHash,
+            $userId,
+        ]);
     respond(['message' => 'Profile updated.']);
 }
 

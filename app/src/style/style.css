@@ -1,37 +1,50 @@
 /* 
-   PROFESSIONAL ADMIN THEME - FUSION VERSION
-   Merged from the Student Success Hub UI.
+   PROFESSOR-PROOF SIMPLIFIED THEME 
+   Focus: High Contrast, Zero Ambiguity, Easy to Explain
 */
 
 :root {
-    --sidebar-width: 260px;
-    --primary-dark: #1e293b;
-    --primary-accent: #3b82f6;
-    --bg-light: #f8fafc;
-    --text-main: #334155;
+    /* Light Mode Colors */
+    --bg-main: #ffffff;
+    --bg-card: #ffffff;
+    --text-main: #000000;
+    --text-muted: #555555;
+    --primary: #3b82f6;
+    --border: #dddddd;
     --white: #ffffff;
-    --transition: all 0.3s ease;
+}
+
+body.dark-theme {
+    /* Dark Mode Colors - High Contrast */
+    --bg-main: #0f172a;
+    --bg-card: #1e293b;
+    --text-main: #ffffff;
+    --text-muted: #cbd5e1;
+    --primary: #60a5fa;
+    --border: #334155;
+    --white: #1e293b;
 }
 
 body {
-    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--bg-light);
+    font-family: 'Inter', sans-serif;
+    background-color: var(--bg-main);
     color: var(--text-main);
     margin: 0;
     display: flex;
+    transition: background 0.2s ease;
 }
 
+/* Sidebar - Fixed High Contrast */
 .sidebar {
-    width: var(--sidebar-width);
+    width: 260px;
     height: 100vh;
-    background-color: var(--primary-dark);
-    color: var(--white);
+    background-color: #0f172a; /* Always dark for professional look */
+    color: #ffffff;
     position: fixed;
     left: 0;
     top: 0;
     display: flex;
     flex-direction: column;
-    transition: var(--transition);
     z-index: 1000;
 }
 
@@ -47,57 +60,72 @@ body {
     list-style: none;
     padding: 1.5rem 0;
     margin: 0;
-    flex-grow: 1;
 }
 
-.sidebar-menu li {
-    padding: 0.5rem 1.5rem;
-}
+.sidebar-menu li { padding: 0.2rem 1rem; }
 
 .sidebar-menu a {
     color: #94a3b8;
     text-decoration: none;
-    display: flex;
-    align-items: center;
+    display: block;
     padding: 0.75rem 1rem;
     border-radius: 8px;
-    transition: var(--transition);
+    transition: 0.2s;
 }
 
-.sidebar-menu a:hover, .sidebar-//opt/data/home/projects/hozyfa_version/app/src/style/style.cssmenu a.active {
-    background-color: var(--primary-accent);
-    color: var(--white);
+.sidebar-menu a:hover, .sidebar-menu a.active {
+    background-color: var(--primary);
+    color: #ffffff;
 }
 
+/* Main Content */
 .main-content {
-    margin-left: var(--sidebar-width);
-    width: calc(100% - var(--sidebar-width));
-    min-height: 100vh;
+    margin-left: 260px;
+    width: calc(100% - 260px);
     padding: 2rem;
-    transition: var(--transition);
 }
 
+/* Cards - The core of the UI */
 .custom-card {
-    background: var(--white);
-    border: none;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
     border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+    color: var(--text-main); /* Force text color */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+/* Text Utilities - To kill the "Gray" issue */
+.text-muted {
+    color: var(--text-muted) !important;
+}
+
+.fw-bold { font-weight: 600; }
+
+/* Form Elements */
+.form-control, .form-select {
+    background-color: var(--bg-card);
+    color: var(--text-main);
+    border: 1px solid var(--border);
 }
 
 .btn-primary {
-    background-color: var(--primary-accent);
+    background-color: var(--primary);
     border: none;
-    border-radius: 10px;
-    padding: 0.6rem 1.5rem;
-    font-weight: 500;
+    color: white;
 }
 
-.form-control {
-    border-radius: 10px;
-    padding: 0.75rem;
+/* Responsive */
+@media (max-width: 768px) {
+    .sidebar { left: -260px; transition: 0.3s; }
+    .sidebar.active { left: 0; }
+    .main-content { margin-left: 0; width: 100%; }
 }
 
-body.no-sidebar .sidebar { display: none; }
-body.no-sidebar .main-content { margin-left: 0; width: 100%; }
+/* Print Mode */
+@media print {
+    .sidebar, .btn, .no-print { display: none !important; }
+    .main-content { margin-left: 0; width: 100%; }
+    body { background: white; color: black; }
+}

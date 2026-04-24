@@ -6,70 +6,72 @@
     <title>Manage Semester - Student Success Hub</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="../style/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body class="no-sidebar d-flex align-items-center justify-content-center vh-100">
 
-    <div class="custom-card shadow-lg" style="width: 500px;">
-        <div class="mb-4">
-            <a href="semesters.html" class="btn btn-sm btn-outline-secondary mb-3">← Back to List</a>
-            <h2 class="fw-bold" id="form-title">Add New Semester</h2>
+    <div class="custom-card shadow-lg" style="width: 420px;">
+        <div class="text-center mb-4">
+            <h2 class="fw-bold" id="form-title">Add Semester</h2>
+            <p class="text-muted" id="form-subtitle">Create a new semester to organize your courses</p>
         </div>
 
         <form id="semesterForm">
             <div class="mb-3">
                 <label class="form-label">Semester Name</label>
-                <input type="text" id="semName" class="form-control" placeholder="e.g. Semester 1" required>
+                <input type="text" id="semName" class="form-control" placeholder="e.g. Fall 2024" required>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Date / Period</label>
-                <input type="text" id="semDate" class="form-control" placeholder="e.g. Fall 2024">
-            </div>
-            <div class="d-flex gap-2">
-                <button type="submit" class="btn btn-primary">Save Semester</button>
-                <button type="button" class="btn btn-outline-secondary" onclick="window.location.href='semesters.html'">Cancel</button>
-            </div>
+            <button type="submit" id="submitBtn" class="btn btn-primary w-100 py-2">Create Semester</button>
         </form>
+
+        <div class="text-center mt-4">
+            <a href="semesters.html" class="text-decoration-none">← Back to Semesters</a>
+        </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../scripts/ui.js"></script>
     <script src="../scripts/api.js" type="module"></script>
     <script type="module">
         import { api } from '../scripts/api.js';
-
+        
         const urlParams = new URLSearchParams(window.location.search);
-        const semId = urlParams.get('id');
+        const semesterId = urlParams.get('id');
+        const form = document.getElementById('semesterForm');
 
-        async function loadData() {
-            if (semId) {
-                document.getElementById('form-title').innerText = "Edit Semester";
-                try {
-                    const semesters = await api.semesters.getAll();
-                    const sem = semesters.find(s => s.id == semId);
-                    if (sem) {
-                        document.getElementById('semName').value = sem.name;
-                        document.getElementById('semDate').value = sem.start_date || "";
-                    }
-                } catch (err) { window.location.href = 'login.html'; }
+        async function loadSemester() {
+            if (!semesterId) return;
+
+            try {
+                const semesters = await api.semesters.getAll();
+                const sem = semesters.find(s => s.id == semesterId);
+                if (sem) {
+                    document.getElementById('form-title').innerText = "Edit Semester";
+                    document.getElementById('form-subtitle').innerText = "Update the name of your semester";
+                    document.getElementById('semName').value = sem.name;
+                    document.getElementById('submitBtn').innerText = "Save Changes";
+                }
+            } catch (err) {
+                console.error('Error loading semester:', err);
             }
         }
 
-        document.getElementById('semesterForm').onsubmit = async (e) => {
+        form.onsubmit = async (e) => {
             e.preventDefault();
-            const name = document.getElementById('semName').value;
-            const date = document.getElementById('semDate').value;
-
+            const name = document.getElementById('semName').value.trim();
             try {
-                if (semId) {
-                    await api.semesters.update(semId, { name, start_date: date });
+                if (semesterId) {
+                    await api.semesters.update(semesterId, { name });
+                    alert("Semester updated successfully!");
                 } else {
-                    await api.semesters.create(name, date, ""); // End date empty for now
+                    await api.semesters.create(name);
+                    alert("Semester created successfully!");
                 }
                 window.location.href = 'semesters.html';
-            } catch (err) { alert(err.message); }
+            } catch (err) {
+                alert("Error: " + err.message);
+            }
         };
 
-        window.onload = loadData;
+        window.onload = loadSemester;
     </script>
 </body>
 </html>

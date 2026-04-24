@@ -4,7 +4,7 @@
 // ============================================================
 
 define('DB_HOST', 'localhost');
-define('DB_NAME', 'study_planner');
+define('DB_NAME', 'gpa_calculator');
 define('DB_USER', 'root');        // change in production
 define('DB_PASS', '');            // change in production
 define('DB_CHARSET', 'utf8mb4');

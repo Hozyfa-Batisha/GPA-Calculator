@@ -3,7 +3,7 @@
 //  Base URL points to your PHP server
 // ============================================================
 
-const API_BASE = 'http://localhost/study-planner/server';
+const API_BASE = window.location.origin + '/gpa-calculator/server';
 
 async function request(endpoint, method = 'GET', body = null) {
     const options = {

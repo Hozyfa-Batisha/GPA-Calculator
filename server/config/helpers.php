@@ -34,6 +34,10 @@ function getBody(): array {
 
 // ── Grade → grade points map ─────────────────────────────────
 function gradeToPoints(string $grade): ?float {
+    if (is_numeric($grade)) {
+        $val = (float)$grade;
+        return ($val >= 0 && $val <= 4.0) ? $val : null;
+    }
     $map = [
         'A'  => 4.0, 'A-' => 3.7,
         'B+' => 3.3, 'B'  => 3.0, 'B-' => 2.7,
@@ -56,7 +60,7 @@ function refreshOverdueTasks(PDO $pdo, int $userId): void {
 }
 
 // ── CORS headers (adjust origin in production) ───────────────
-header('Access-Control-Allow-Origin: http://localhost');
+header('Access-Control-Allow-Origin: ' . ($_SERVER['HTTP_ORIGIN'] ?? 'http://localhost'));
 header('Access-Control-Allow-Credentials: true');
 header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type');

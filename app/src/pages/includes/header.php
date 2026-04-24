@@ -29,4 +29,8 @@
         </ul>
     </div>
 
+    <button id="mobile-toggle" class="mobile-toggle" aria-label="Toggle Menu">
+        ☰
+    </button>
+
     <div class="main-content">
