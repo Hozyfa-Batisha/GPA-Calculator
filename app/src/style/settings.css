@@ -1,0 +1,168 @@
+/* ===== SETTINGS PAGE CSS ===== */
+
+.user-pill {
+    background: rgba(255,255,255,0.15);
+    color: var(--white);
+    padding: 0.3rem 0.9rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.3);
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: var(--white);
+    color: var(--text-main);
+    text-decoration: none;
+    font-size: 1.1rem;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    flex-shrink: 0;
+    transition: var(--transition);
+}
+.back-btn:hover {
+    background: var(--bg-light);
+    color: var(--text-main);
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+.page-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Settings wrapper - centered */
+.settings-wrapper {
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+/* Settings Card */
+.settings-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.8rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+}
+.settings-card:hover {
+    transform: none;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+}
+
+.settings-card-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+}
+.settings-icon {
+    font-size: 1.1rem;
+    margin-top: 2px;
+}
+.settings-card-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-main);
+}
+.settings-card-subtitle {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+/* Form labels */
+.form-label-custom {
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-main);
+    margin-bottom: 0.4rem;
+    display: block;
+}
+
+/* Inputs */
+.form-control-custom {
+    border-radius: 10px;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--bg-light);
+    font-size: 0.88rem;
+    background: var(--white);
+    color: var(--text-main);
+    transition: var(--transition);
+}
+.form-control-custom:focus {
+    border-color: var(--primary-light);
+    box-shadow: 0 0 0 0.2rem rgba(92,107,192,0.2);
+    outline: none;
+}
+.form-control-custom:disabled {
+    background: var(--bg-light);
+    color: var(--text-muted);
+    cursor: not-allowed;
+}
+.form-control-custom::placeholder {
+    color: var(--text-muted);
+}
+
+/* Field hint text */
+.field-hint {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-top: 0.3rem;
+    display: block;
+}
+
+/* Save profile button */
+.btn-save {
+    background-color: var(--primary-color);
+    color: var(--white);
+    border: none;
+    border-radius: 10px;
+    padding: 0.55rem 1.3rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+.btn-save:hover {
+    background-color: var(--primary-light);
+    color: var(--white);
+    transform: scale(1.02);
+}
+
+/* Change password button */
+.btn-change-password {
+    background: var(--white);
+    color: var(--text-main);
+    border: 1px solid var(--bg-light);
+    border-radius: 10px;
+    padding: 0.55rem 1.3rem;
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+.btn-change-password:hover {
+    background: var(--bg-light);
+    border-color: var(--text-muted);
+}
+
+/* Alert messages */
+.alert-success-custom {
+    background: #d4edda;
+    color: #155724;
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+}
+.alert-error-custom {
+    background: #f8d7da;
+    color: #721c24;
+    border-radius: 10px;
+    padding: 0.6rem 1rem;
+    font-size: 0.85rem;
+}
